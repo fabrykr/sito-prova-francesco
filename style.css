@@ -113,13 +113,12 @@ main#content { margin-left: 0; transition: margin-left 0.3s ease; }
   #sidebar { transform: translateX(0); }
   main#content { margin-left: 260px; }
   .hamburger { display: none; }
-  .foto-wrapper.foto-mobile { display: none; }
-  .foto-wrapper.foto-desktop { display: block; }
+  .foto-wrapper { display: block; }
 }
 
 @media (max-width: 999px) {
   .hamburger { display: block; }
-  .foto-wrapper.foto-mobile { 
+  .foto-wrapper { 
     display: flex;
     position: relative;
     width: 100%;
