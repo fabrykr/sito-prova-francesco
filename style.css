@@ -182,12 +182,25 @@ h1 {
   box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
 
-/* Desktop: mostra sidebar a destra e nasconde hamburger o meno */
-@media (min-width: 1000px) {
-  #sidebar { transform: translateX(0); }
-  main#content { margin-right: 260px; margin-left: 0; } /* spazio per sidebar a destra */
-  .hamburger { display: block; } /* se vuoi hamburger anche su desktop */
+/* Stile per spostare il contenuto quando la sidebar è aperta su desktop */
+.content-shifted {
+  margin-right: 260px;
 }
+
+@media (min-width: 1000px) {
+  /* Su desktop, il pulsante hamburger rimane visibile */
+  .hamburger {
+    display: block;
+  }
+}
+
+@media (max-width: 999px) {
+  /* Su mobile, il contenuto non ha margine destro */
+  main#content {
+    margin-right: 0;
+  }
+}
+
 @media (max-width: 999px) {
   main#content { margin: 0; }
 }
