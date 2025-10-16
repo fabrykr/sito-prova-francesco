@@ -353,37 +353,31 @@ section, .galleria-pizze {
   contain-intrinsic-size: 800px;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  :root { --altezza-header: 150px; }
+/* Desktop: foto in alto a destra dentro l'header */
+@media (min-width: 1000px) {
+  header { position: fixed; } /* gi à presente, qui solo per chiarezza */
 
-  h1 { font-size: 2rem; }
-  .sottotitolo { font-size: 1rem; }
-  main { padding: 0 6%; margin-top: 30px; }
-  .locali-layout { flex-direction: column; }
-
-  /* Foto personale sotto header, non coperta */
+  /* Ancoraggio all'header */
   .foto-wrapper {
-    position: relative;  /* rientra nel flusso su mobile */
-    top: auto;
-    right: auto;
-    z-index: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: auto;
-    padding: 0;
-    margin-top: calc(8px + env(safe-area-inset-top, 0px));
+    position: absolute;        /* posiziona rispetto all'header */
+    top: 50%;
+    right: 4%;
+    transform: translateY(-50%); /* verticale centrata rispetto all'header */
+    width: 180px;
+    height: 180px;
+    z-index: 1001;             /* sopra all'header */
+    overflow: visible;         /* non taglia gli angoli dell'immagine */
     background: transparent;
   }
+
   .foto-personale {
-    width: 140px;
-    height: 140px;
+    width: 180px;
+    height: 180px;
     object-fit: cover;
-    border-radius: 16px;
+    border-radius: 16px;       /* angoli smussati */
   }
 }
+
 
 @media (max-width: 480px) {
   .galleria-pizze { max-width: 100%; }
