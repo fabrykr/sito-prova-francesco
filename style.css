@@ -3,15 +3,14 @@
   --colore-accento: #d4af37;
   --colore-testo: #222;
   --colore-sfondo: #fff;
-  --altezza-header: 260px;
+  --altezza-header: 260px; /* Altezza per Desktop */
   --font-principale: 'Montserrat', sans-serif;
 }
 
-/* Ancoraggio scroll per header fisso */
+/* Ancoraggio scroll e gestione scrollbar (corretto) */
 html {
   scrollbar-gutter: stable;
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--altezza-header) + env(safe-area-inset-top));
 }
 
 /* Layout base, sticky footer */
@@ -20,7 +19,7 @@ body {
   margin: 0;
   background: var(--colore-sfondo);
   color: var(--colore-testo);
-  padding-top: calc(var(--altezza-header) + env(safe-area-inset-top));
+  padding-top: var(--altezza-header); /* Padding per header fisso */
   overflow-x: hidden;
   line-height: 1.6;
   display: flex;
@@ -47,7 +46,7 @@ body::before {
   z-index: -1;
 }
 
-/* HEADER */
+/* HEADER (Stile base per Desktop) */
 header {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -58,6 +57,7 @@ header {
   padding: 0 4%;
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   z-index: 1000;
+  box-sizing: border-box; /* Importante per gestire il padding */
 }
 .header-content { width: 100%; position: relative; }
 h1 {
@@ -78,7 +78,7 @@ h1 {
   text-transform: uppercase;
 }
 
-/* FOTO PERSONALE */
+/* FOTO PERSONALE (Stile base per Desktop) */
 .foto-wrapper {
   position: absolute;
   top: 50%;
@@ -87,13 +87,11 @@ h1 {
   width: 180px;
   height: 180px;
   z-index: 1001;
-  overflow: visible;
-  background: transparent;
   display: block;
 }
 .foto-personale {
-  width: 180px;
-  height: 180px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
@@ -108,14 +106,13 @@ h1 {
 /* SIDEBAR E OVERLAY */
 #sidebar {
   position: fixed;
-  top: 0; /* Modificato: la sidebar parte sempre dall'alto */
+  top: 0;
   right: 0;
   bottom: 0;
   width: 260px;
   background: #fff;
   box-shadow: -2px 0 10px rgba(0,0,0,.12);
   padding: 20px;
-  padding-top: calc(var(--altezza-header) + 20px); /* Spazio per l'header fisso */
   padding-right: calc(20px + env(safe-area-inset-right, 0px));
   overflow-y: auto;
   transform: translateX(100%);
@@ -139,29 +136,31 @@ h1 {
   pointer-events: auto;
 }
 
-/* TASTO HAMBURGER */
+/* HAMBURGER - PROBLEMA 1 RISOLTO */
+/* Stile base e centratura righe */
 .hamburger {
+  position: fixed;
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0;
-  cursor: pointer;
-  background-color: #fff;
-  border: 0;
-  border-radius: 8px;
-  margin: 0;
-  position: fixed;
-  top: 20px; /* Posizione fissa in alto a destra */
-  right: 20px;
   z-index: 2100;
-  width: 44px;
-  height: 44px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+/* Posizione Desktop: sotto l'header */
+.hamburger {
+  top: calc(var(--altezza-header) + 12px);
+  right: 12px;
 }
 .hamburger-box {
   width: 24px;
-  height: 20px;
-  display: block;
+  height: 18px; /* Leggermente ridotta per un migliore allineamento */
   position: relative;
 }
 .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
@@ -170,61 +169,29 @@ h1 {
   background-color: var(--colore-primario);
   border-radius: 4px;
   position: absolute;
+  left: 0;
   transition: transform 0.25s ease-in-out;
 }
 .hamburger-inner {
   top: 50%;
   transform: translateY(-50%);
 }
-.hamburger-inner::before, .hamburger-inner::after {
-  content: '';
-  display: block;
-}
-.hamburger-inner::before { top: -8px; }
-.hamburger-inner::after { bottom: -8px; }
+.hamburger-inner::before { content: ''; top: -7px; }
+.hamburger-inner::after { content: ''; bottom: -7px; }
 .hamburger[aria-expanded="true"] .hamburger-inner { transform: rotate(45deg); }
 .hamburger[aria-expanded="true"] .hamburger-inner::before { top: 0; transform: rotate(-90deg); }
 .hamburger[aria-expanded="true"] .hamburger-inner::after { bottom: 0; transform: rotate(-90deg); }
 
-/* Stile per spostare il contenuto quando la sidebar è aperta su desktop */
-.content-shifted {
-  margin-right: 260px;
-}
-
-/* MAIN/SEZIONI */
-main {
-  max-width: 1000px;
-  margin: 50px auto;
-  padding: 0 8%;
-  position: relative; /* Necessario per il corretto z-index su mobile */
-  z-index: 1;
-}
-section { margin-bottom: 60px; padding-bottom: 18px; }
-h2 {
-  color: var(--colore-accento);
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  margin-bottom: 24px;
-  font-weight: 400;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-section::after {
-  content: '';
-  display: block;
-  width: 80px;
-  height: 5px;
-  background: linear-gradient(90deg, var(--colore-primario) 60%, var(--colore-accento) 100%);
-  margin-top: 12px;
-  border-radius: 3px;
-  box-shadow: 0 0 6px #d4af37a0;
-  transition: width 0.4s ease;
-}
-section:hover::after { width: 110px; }
-
-/* ... (tutte le altre regole CSS fino alle media query) ... */
+/* MAIN E SEZIONI (Stili base) */
+main { max-width: 1000px; margin: 50px auto; padding: 0 8%; }
+/* ... (tutte le altre regole CSS generali restano invariate) ... */
 :where(h1,h2,h3,h4,h5,h6) { margin:0; }
 :where(ul,ol) { margin:0; padding-inline-start:1.2em; }
 p, li, a, .nome-pizza { overflow-wrap: anywhere; hyphens: auto; }
+section { margin-bottom: 60px; padding-bottom: 18px; }
+h2 { color: var(--colore-accento); font-size: clamp(1.25rem, 3vw, 2rem); margin-bottom: 24px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; }
+section::after { content: ''; display: block; width: 80px; height: 5px; background: linear-gradient(90deg, var(--colore-primario) 60%, var(--colore-accento) 100%); margin-top: 12px; border-radius: 3px; box-shadow: 0 0 6px #d4af37a0; transition: width 0.4s ease; }
+section:hover::after { width: 110px; }
 .locali-layout { display: flex; align-items: center; justify-content: space-between; gap: 36px; flex-wrap: wrap; }
 .locali-testo { flex: 1; min-width: 220px; }
 .locali-foto-container { flex: 0 0 auto; }
@@ -264,80 +231,70 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
 /* ============================================= */
 /* OTTIMIZZAZIONE PER DISPOSITIVI MOBILI (< 1000px) */
 /* ============================================= */
-/* Questo blocco unifica e corregge tutte le regole per mobile. */
 
 @media (max-width: 999px) {
 
-  /* 1. Altezza Header Mobile */
   :root {
-    --altezza-header: 110px; /* Un'altezza più adatta per mobile */
+    --altezza-header: 120px; /* Altezza header più contenuta */
   }
 
-  /* 2. Header Mobile (rimane fisso) */
+  body {
+    /* Spazio per header + foto (120px + 140px/2 per la parte sotto) */
+    padding-top: calc(var(--altezza-header) + 70px);
+  }
+
+  /* HEADER MOBILE - PROBLEMA 3 RISOLTO */
   header {
     height: var(--altezza-header);
-    align-items: flex-end; /* Allinea il testo in basso */
-    padding-bottom: 12px; /* Spazio sotto il testo */
+    align-items: center; /* Centra verticalmente il testo */
+    /* Padding per notch e per centrare */
+    padding: calc(env(safe-area-inset-top)) 6% 0 6%;
   }
-  
+
   .header-content {
     text-align: center;
     position: static;
-    width: 100%;
   }
+  
+  h1 { font-size: 1.8rem; }
+  .sottotitolo { font-size: 1rem; margin-top: 2px; }
 
-  h1 {
-    font-size: 1.8rem;
-    line-height: 1.1;
-  }
-  .sottotitolo {
-    font-size: 0.9rem;
-    margin-top: 2px;
-  }
-
-  /* 3. Posizionamento Foto Personale sotto l'header */
+  /* FOTO PERSONALE MOBILE - PROBLEMA 2 RISOLTO */
   .foto-wrapper {
-    position: relative; /* Rimosso dall'header e messo nel flusso del body */
-    z-index: 2; /* Sopra il contenuto main */
-    width: 120px;
-    height: 120px;
-    margin: 0 auto;
-    transform: translateY(-50%); /* Lo fa "salire" a cavallo del bordo inferiore dell'header */
-    
-    /* Annulla stili desktop non necessari */
-    right: auto;
-    top: auto;
-    display: block;
-    background: transparent;
+    position: fixed; /* Fissa la foto insieme all'header */
+    top: var(--altezza-header);
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra e sposta a cavallo */
+    width: 140px;
+    height: 140px;
+    z-index: 1001;
   }
-  
+
   .foto-personale {
-    width: 100%;
-    height: 100%;
-    border: 4px solid var(--colore-sfondo); /* Bordo per staccare dallo sfondo */
+    border: 4px solid var(--colore-sfondo); /* Bordo per staccare */
+  }
+
+  /* HAMBURGER MOBILE - PROBLEMA 1 RISOLTO */
+  .hamburger {
+    top: calc(env(safe-area-inset-top) + 15px); /* Allineato con la safe area */
+    right: 15px;
   }
   
-  /* 4. Adattamento Contenuto Principale */
-  body {
-    /* Il padding-top originale è corretto e crea lo spazio per l'header fisso */
+  /* Stile per sidebar su mobile */
+  #sidebar {
+    padding-top: calc(env(safe-area-inset-top) + 20px);
   }
-  
+
+  /* Adattamenti layout mobile */
   main {
-    margin: 0 auto; /* Rimuove il margine superiore che non serve più */
+    margin-top: 0;
     padding: 0 6%;
   }
-  
-  /* 5. Regole aggiuntive per layout mobile */
-  .locali-layout {
+  .locali-layout, .footer-inner {
+    grid-template-columns: 1fr;
     flex-direction: column;
   }
-
-  .galleria-pizze { max-width: 100%; }
-  .slide { aspect-ratio: 4 / 3; }
-  .slide img {
-    height: 100%;
-    max-height: none;
-  }
-  .footer-inner { grid-template-columns: 1fr; }
+  .galleria-pizze, .slide { max-width: 100%; }
+  .slide { aspect-ratio: 4/3; }
+  .slide img { height: 100%; max-height: none; }
 }
-
