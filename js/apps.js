@@ -38,52 +38,43 @@
   }
 
   // Sidebar toggle accessibile
-  const menuBtn = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('sidebar');
-  const navOverlay = document.getElementById('navOverlay');
-  
-  function openMenu() {
-    sidebar.classList.add('open');
-    navOverlay.classList.add('active');
-    navOverlay.removeAttribute('hidden');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';  // blocca scroll dietro menu
-  }
-  
-  function closeMenu() {
-    sidebar.classList.remove('open');
-    navOverlay.classList.remove('active');
-    navOverlay.setAttribute('hidden', '');
-    menuBtn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';         // riabilita scroll
-  }
-  
+const menuBtn = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const navOverlay = document.getElementById('navOverlay');
+
+function openMenu() {
+  sidebar.classList.add('open');
+  navOverlay.classList.add('active');
+  navOverlay.removeAttribute('hidden');
+  menuBtn.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  sidebar.classList.remove('open');
+  navOverlay.classList.remove('active');
+  navOverlay.setAttribute('hidden', '');
+  menuBtn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+
+// Aggiungi gli event listener UNA SOLA VOLTA
+if (menuBtn && navOverlay) {
   menuBtn.addEventListener('click', () => {
     const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
     expanded ? closeMenu() : openMenu();
-  }, { passive: true });
-  
-  navOverlay.addEventListener('click', closeMenu, { passive: true });
-  
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
-  }, { passive: true });
+  });
 
-
-  window.closeMenu = closeMenu; // ESPOSTO globalmente
-
-  if(menuBtn) {
-    menuBtn.addEventListener('click', () => {
-      const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
-      expanded ? closeMenu() : openMenu();
-    }, { passive: true });
-  }
-
-  navOverlay?.addEventListener('click', closeMenu, { passive: true });
+  navOverlay.addEventListener('click', closeMenu);
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
-  }, { passive: true });
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+      closeMenu();
+    }
+  });
+}
+
+window.closeMenu = closeMenu; // Esponi globalmente se necessario
 
   function bindModalOnce() {
     if (window.__modalBound) return;
