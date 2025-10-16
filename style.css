@@ -19,17 +19,26 @@ body {
   line-height: 1.6;
 }
 
-/* background immagine soft */
+/* background immagine soft - STABILE su mobile */
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  inset: 0;                     /* occupa sempre l'intero viewport */
+  height: 100lvh;  /* “large viewport”: non cambia quando le barre si muovono */
   background-image: url('https://i.ibb.co/n8wKLf9t/Generated-Image-October-15-2025-5-58-PM.png');
-  background-size: cover;
-  background-position: center;
-  filter: grayscale(50%) contrast(1.0);
+  background-size: cover;       /* riempie senza deformare */
+  background-position: center;  /* centrata */
+  background-repeat: no-repeat; /* no tile */
   opacity: 0.11;
+  /* Performance e stabilità */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
   z-index: -1;
+}
+
+@media (max-width: 480px) {
+  body::before { filter: none; } /* rimuove lavoro extra in compositing */
 }
 
 /* HEADER */
