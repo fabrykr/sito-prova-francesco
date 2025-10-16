@@ -13,50 +13,28 @@
 
   // --- FUNZIONI PER IL MENÙ LATERALE E GESTIONE SCROLL ---
 
-  function openMenu() {
-    if (!sidebar || !navOverlay || !menuBtn) return;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+function openMenu() {
+  sidebar.classList.add('open');
+  navOverlay.classList.add('active');
+  navOverlay.removeAttribute('hidden');
+  menuBtn.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
 
-    document.body.style.paddingRight = scrollbarWidth + 'px';
-    if (mainContent) mainContent.style.paddingRight = scrollbarWidth + 'px';
-    if (footer) footer.style.paddingRight = scrollbarWidth + 'px';
-
-    fixedElements.forEach((el) => {
-      const currentRight = window.getComputedStyle(el).right;
-      el.style.right = `calc(${currentRight} + ${scrollbarWidth}px)`;
-    });
-
-    sidebar.classList.add('open');
-    navOverlay.classList.add('active');
-    navOverlay.removeAttribute('hidden');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-
-    if (window.innerWidth >= 1000 && mainContent) {
-      mainContent.classList.add('content-shifted');
-    }
+  if (window.innerWidth >= 1000) {
+    mainContent.classList.add('content-shifted');
   }
+}
 
-  function closeMenu() {
-    if (!sidebar || !navOverlay || !menuBtn) return;
-    document.body.style.paddingRight = '';
-    if (mainContent) mainContent.style.paddingRight = '';
-    if (footer) footer.style.paddingRight = '';
+function closeMenu() {
+  sidebar.classList.remove('open');
+  navOverlay.classList.remove('active');
+  navOverlay.setAttribute('hidden', '');
+  menuBtn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
 
-    fixedElements.forEach((el) => {
-      el.style.right = '';
-    });
+  mainContent.classList.remove('content-shifted');
+}
 
-    sidebar.classList.remove('open');
-    navOverlay.classList.remove('active');
-    navOverlay.setAttribute('hidden', '');
-    menuBtn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-
-    if (mainContent) {
-      mainContent.classList.remove('content-shifted');
-    }
-  }
 
   // --- COLLEGAMENTO DEGLI EVENTI ---
 
