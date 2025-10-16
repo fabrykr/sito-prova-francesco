@@ -42,12 +42,19 @@ const menuBtn = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
 const navOverlay = document.getElementById('navOverlay');
 
+const mainContent = document.getElementById('content');
+
 function openMenu() {
   sidebar.classList.add('open');
   navOverlay.classList.add('active');
   navOverlay.removeAttribute('hidden');
   menuBtn.setAttribute('aria-expanded', 'true');
   document.body.style.overflow = 'hidden';
+
+  // Sposta il contenuto solo su desktop
+  if (window.innerWidth >= 1000) {
+    mainContent.classList.add('content-shifted');
+  }
 }
 
 function closeMenu() {
@@ -56,7 +63,11 @@ function closeMenu() {
   navOverlay.setAttribute('hidden', '');
   menuBtn.setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
+
+  // Rimuovi lo spostamento del contenuto
+  mainContent.classList.remove('content-shifted');
 }
+
 
 // Aggiungi gli event listener UNA SOLA VOLTA
 if (menuBtn && navOverlay) {
