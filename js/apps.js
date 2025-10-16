@@ -42,7 +42,7 @@ const menuBtn = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
 const navOverlay = document.getElementById('navOverlay');
 
-// Seleziona tutti gli elementi fissi che potrebbero spostarsi
+// Seleziona TUTTI gli elementi posizionati in modo fisso
 const fixedElements = document.querySelectorAll('header, .hamburger');
 const mainContent = document.getElementById('content');
 
@@ -50,10 +50,13 @@ function openMenu() {
   // Calcola la larghezza della scrollbar
   const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 
-  // Applica il padding al body e agli elementi fissi
+  // Applica la compensazione a tutti gli elementi che ne hanno bisogno
   document.body.style.paddingRight = scrollbarWidth + 'px';
   fixedElements.forEach((el) => {
-    el.style.paddingRight = scrollbarWidth + 'px';
+    // Invece di 'paddingRight', modifichiamo direttamente 'right' per gli elementi posizionati
+    // Se un elemento ha un 'right' definito (es. '12px'), lo aggiorniamo
+    const currentRight = window.getComputedStyle(el).right;
+    el.style.right = `calc(${currentRight} + ${scrollbarWidth}px)`;
   });
   
   // Apri il menu e blocca lo scroll
@@ -70,10 +73,10 @@ function openMenu() {
 }
 
 function closeMenu() {
-  // Rimuovi il padding dal body e dagli elementi fissi
+  // Rimuovi la compensazione (ripristina gli stili originali)
   document.body.style.paddingRight = '';
   fixedElements.forEach((el) => {
-    el.style.paddingRight = '';
+    el.style.right = ''; // Rimuovendo lo stile inline, torna al valore del CSS
   });
 
   // Chiudi il menu e ripristina lo scroll
@@ -86,6 +89,7 @@ function closeMenu() {
   // Rimuovi lo spostamento del contenuto principale
   mainContent.classList.remove('content-shifted');
 }
+
 
 // Aggiungi gli event listener UNA SOLA VOLTA
 if (menuBtn && navOverlay) {
