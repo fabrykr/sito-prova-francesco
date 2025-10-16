@@ -73,7 +73,6 @@
 
   function bindModalOnce() {
     if (window.__modalBound) return;
-    
     const foto = document.getElementById('fotoProfilo');
     const overlay = document.getElementById('overlayFoto');
     const closeOverlayBtn = document.getElementById('closeOverlay');
@@ -153,13 +152,19 @@
     }
     window.updateSlide = updateSlide;
 
-    nextBtn?.addEventListener('click', () => {
+    // Rimuove vecchi listener se presenti
+    prevBtn?.replaceWith(prevBtn.cloneNode(true));
+    nextBtn?.replaceWith(nextBtn.cloneNode(true));
+    const prevBtnNew = document.getElementById('prevBtn');
+    const nextBtnNew = document.getElementById('nextBtn');
+
+    nextBtnNew?.addEventListener('click', () => {
       if (!slides.length) return;
       currentIndex = (currentIndex + 1) % slides.length;
       updateSlide();
     });
 
-    prevBtn?.addEventListener('click', () => {
+    prevBtnNew?.addEventListener('click', () => {
       if (!slides.length) return;
       currentIndex = (currentIndex - 1 + slides.length) % slides.length;
       updateSlide();
@@ -242,6 +247,7 @@
   }
 
   window.initUI = function initUI() {
+    closeMenu?.();
     bindCarousel();
     setupReveal();
   };
