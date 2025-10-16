@@ -48,12 +48,6 @@ const mainContent = document.getElementById('content');
 function openMenu() {
   const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 
-  const fixedElements = document.querySelectorAll('header, .hamburger');
-const mainContent = document.getElementById('content');
-
-function openMenu() {
-  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-
   // Applica la compensazione al body E al contenitore principale
   document.body.style.paddingRight = scrollbarWidth + 'px';
   mainContent.style.paddingRight = scrollbarWidth + 'px'; // <-- AGGIUNTA CHIAVE
@@ -96,8 +90,6 @@ function closeMenu() {
   // Rimuovi lo spostamento del contenuto principale
   mainContent.classList.remove('content-shifted');
 }
-
-
 
 
 // Aggiungi gli event listener UNA SOLA VOLTA
