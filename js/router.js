@@ -10,6 +10,21 @@ async function loadHTML(url, target) {
 
 // Load footer all’avvio
 loadHTML("footer.html", footerContainer);
+async function router() {
+  const hash = window.location.hash;
+
+  if (hash.startsWith("#page/")) {
+    const page = hash.replace("#page/", "");
+    await loadHTML(`templates/${page}.html`, content);
+    window.initUI?.(); // inizializza componenti nella pagina di approfondimento
+  } else {
+    await loadHTML("templates/panoramica.html", content);
+    window.initUI?.(); // inizializza componenti nella panoramica
+  }
+
+  await loadHTML("footer.html", footerContainer); // footer comune
+}
+
 
 // Routing: #page/nome o #inizio
 window.addEventListener("hashchange", router);
@@ -28,7 +43,21 @@ async function router() {
 
   // Carica di nuovo footer identico
   loadHTML("footer.html", footerContainer);
+  async function router() {
+  const hash = window.location.hash;
+
+  if (hash.startsWith("#page/")) {
+    const page = hash.replace("#page/", "");
+    await loadHTML(`templates/${page}.html`, content);
+    window.initUI?.(); // inizializza componenti nella pagina di approfondimento
+  } else {
+    await loadHTML("templates/panoramica.html", content);
+    window.initUI?.(); // inizializza componenti nella panoramica
+  }
+
+  await loadHTML("footer.html", footerContainer); // footer comune
 }
+
 
 // Sidebar toggle per mobile
 document.getElementById("toggleSidebar")?.addEventListener("click", () => {
