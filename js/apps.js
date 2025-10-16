@@ -1,24 +1,19 @@
-// js/app.js
 (() => {
-  // Stato condiviso
   let currentIndex = 0;
   window.__uiGlobalsBound = window.__uiGlobalsBound || false;
   window.__modalBound = window.__modalBound || false;
 
-  // Helper: offset header dalla CSS var
   function getHeaderOffset() {
     const v = getComputedStyle(document.documentElement).getPropertyValue('--altezza-header');
     const n = parseInt(v, 10);
     return Number.isNaN(n) ? 0 : n;
   }
 
-  // Verifica se la modale è aperta (per disabilitare tasti galleria)
   function isOverlayOpen() {
     const overlay = document.getElementById('overlayFoto');
     return overlay?.classList.contains('active');
   }
 
-  // Listener tastiera globali per la galleria
   function galleryKeyHandler(e) {
     if (isOverlayOpen()) return;
     const carousel = document.getElementById('carousel');
@@ -33,7 +28,6 @@
     }
   }
 
-  // Eventi globali registrati una sola volta
   function bindGlobalEventsOnce() {
     if (window.__uiGlobalsBound) return;
     document.addEventListener('keydown', galleryKeyHandler, { passive: true });
@@ -43,48 +37,47 @@
     window.__uiGlobalsBound = true;
   }
 
-  // Toggle sidebar accessibile
-const menuBtn = document.getElementById('menuToggle');
-const sidebar = document.getElementById('sidebar');
-const navOverlay = document.getElementById('navOverlay');
+  // Sidebar toggle accessibile
+  const menuBtn = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
+  const navOverlay = document.getElementById('navOverlay');
 
-function openMenu() {
-  sidebar?.classList.add('open');
-  navOverlay?.classList.add('active');
-  navOverlay?.removeAttribute('hidden');
-  menuBtn?.setAttribute('aria-expanded', 'true'); // aria-expanded: true
-  document.body.style.overflow = 'hidden';
-}
+  function openMenu() {
+    sidebar?.classList.add('open');
+    navOverlay?.classList.add('active');
+    navOverlay?.removeAttribute('hidden');
+    menuBtn?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
 
-function closeMenu() {
-  sidebar?.classList.remove('open');
-  navOverlay?.classList.remove('active');
-  navOverlay?.setAttribute('hidden', '');
-  menuBtn?.setAttribute('aria-expanded', 'false'); // aria-expanded: false
-  document.body.style.overflow = '';
-}
+  function closeMenu() {
+    sidebar?.classList.remove('open');
+    navOverlay?.classList.remove('active');
+    navOverlay?.setAttribute('hidden', '');
+    menuBtn?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
 
-menuBtn?.addEventListener('click', () => {
-  const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
-  expanded ? closeMenu() : openMenu();
-}, { passive: true });
+  if(menuBtn) {
+    menuBtn.addEventListener('click', () => {
+      const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      expanded ? closeMenu() : openMenu();
+    }, { passive: true });
+  }
 
-navOverlay?.addEventListener('click', closeMenu, { passive: true });
+  navOverlay?.addEventListener('click', closeMenu, { passive: true });
 
-// ESC chiude il menu (riusa l’handler globale se già presente)
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeMenu();
-}, { passive: true });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  }, { passive: true });
 
-
-  // Modale foto: bind una sola volta (elementi fuori dal router)
   function bindModalOnce() {
     if (window.__modalBound) return;
     
     const foto = document.getElementById('fotoProfilo');
     const overlay = document.getElementById('overlayFoto');
     const closeOverlayBtn = document.getElementById('closeOverlay');
-    const main = document.getElementById('content'); // ID corretto
+    const main = document.getElementById('content');
     const header = document.querySelector('header');
     let lastFocused = null;
 
@@ -144,7 +137,9 @@ document.addEventListener('keydown', (e) => {
     window.__modalBound = true;
   }
 
-  // Carosello: rilegatura per ogni pagina
+  bindGlobalEventsOnce();
+  bindModalOnce();
+
   function bindCarousel() {
     const carousel = document.getElementById('carousel');
     const slides = carousel ? carousel.querySelectorAll('.slide') : [];
@@ -156,7 +151,7 @@ document.addEventListener('keydown', (e) => {
       const width = slides[0].clientWidth;
       carousel.style.transform = `translateX(-${currentIndex * width}px)`;
     }
-    window.updateSlide = updateSlide; // esposta per resize globale
+    window.updateSlide = updateSlide;
 
     nextBtn?.addEventListener('click', () => {
       if (!slides.length) return;
@@ -171,12 +166,10 @@ document.addEventListener('keydown', (e) => {
     });
 
     currentIndex = 0;
-    requestAnimationFrame(updateSlide); // misura dopo reflow
+    requestAnimationFrame(updateSlide);
   }
 
-  // Reveal on scroll: robusto e con cleanup
   function setupReveal() {
-    // Cleanup observer precedenti
     window.__revealObserver?.disconnect();
     window.__firstSlideObserver?.disconnect();
 
@@ -184,7 +177,6 @@ document.addEventListener('keydown', (e) => {
       'main > section, .contatti-box, .locali-layout > *, .mappa-locali, .galleria-pizze'
     ));
 
-    // Stato iniziale + controllo immediato per elementi già visibili
     revealTargets.forEach(el => {
       el.classList.add('reveal');
       const r = el.getBoundingClientRect();
@@ -209,7 +201,6 @@ document.addEventListener('keydown', (e) => {
       return;
     }
 
-    // Observer generale con soglia più permissiva
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -220,8 +211,9 @@ document.addEventListener('keydown', (e) => {
     }, {
       root: null,
       rootMargin: `-${Math.max(0, getHeaderOffset() - 20)}px 0px -10% 0px`,
-      threshold: 0.01 // più permissivo di prima (era 0.12)
+      threshold: 0.01
     });
+
     window.__revealObserver = observer;
 
     revealTargets.forEach(el => {
@@ -230,7 +222,6 @@ document.addEventListener('keydown', (e) => {
       }
     });
 
-    // Observer prima slide
     if (firstSlide && !firstSlide.classList.contains('in-view')) {
       const firstSlideObserver = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
@@ -250,13 +241,8 @@ document.addEventListener('keydown', (e) => {
     }
   }
 
-  // Inizializza modale subito (una sola volta, fuori dal ciclo SPA)
-  bindGlobalEventsOnce();
-  bindModalOnce();
-
-  // API pubblica: chiamata dal router dopo ogni caricamento pagina
   window.initUI = function initUI() {
-    bindCarousel();  // rilegatura elementi dinamici
-    setupReveal();   // osservatori aggiornati
+    bindCarousel();
+    setupReveal();
   };
 })();
