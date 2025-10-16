@@ -39,9 +39,12 @@ async function router() {
   // Carica sempre il footer giusto dalla cartella templates
   await loadHTML('templates/footer.html', footerContainer);
 
-  // (Opzionale) Scroll to top all'hash nav
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // ESEGUI LO SCROLL SOLO SE LA NAVIGAZIONE NON È BLOCCATA
+  if (typeof window.isNavigationLocked !== 'function' || !window.isNavigationLocked()) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
+
 
 window.addEventListener('hashchange', router);
 window.addEventListener('DOMContentLoaded', router);
