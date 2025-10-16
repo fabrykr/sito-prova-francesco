@@ -179,8 +179,14 @@
     window.__firstSlideObserver?.disconnect();
 
     const revealTargets = Array.from(document.querySelectorAll(
-      'main > section, .contatti-box, .locali-layout > *, .mappa-locali, .galleria-pizze'
-    ));
+  'main > section, .contatti-box, .locali-layout > *, .mappa-locali, .galleria-pizze'
+));
+
+// Aggiungi .reveal a .mappa-locali se manca
+document.querySelectorAll('.mappa-locali').forEach(el => {
+  if (!el.classList.contains('reveal')) el.classList.add('reveal');
+});
+
 
     revealTargets.forEach(el => {
       el.classList.add('reveal');
