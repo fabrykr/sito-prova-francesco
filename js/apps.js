@@ -45,9 +45,6 @@ const navOverlay = document.getElementById('navOverlay');
 const mainContent = document.getElementById('content');
 
 function openMenu() {
-  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-  document.body.style.paddingRight = scrollbarWidth + 'px';
-  
   sidebar.classList.add('open');
   navOverlay.classList.add('active');
   navOverlay.removeAttribute('hidden');
@@ -61,8 +58,6 @@ function openMenu() {
 }
 
 function closeMenu() {
-  document.body.style.paddingRight = '';
-
   sidebar.classList.remove('open');
   navOverlay.classList.remove('active');
   navOverlay.setAttribute('hidden', '');
@@ -72,6 +67,7 @@ function closeMenu() {
   // Rimuovi lo spostamento del contenuto
   mainContent.classList.remove('content-shifted');
 }
+
 
 
 
