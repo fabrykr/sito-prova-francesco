@@ -42,34 +42,50 @@ const menuBtn = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
 const navOverlay = document.getElementById('navOverlay');
 
+// Seleziona tutti gli elementi fissi che potrebbero spostarsi
+const fixedElements = document.querySelectorAll('header, .hamburger');
 const mainContent = document.getElementById('content');
 
 function openMenu() {
+  // Calcola la larghezza della scrollbar
+  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+  // Applica il padding al body e agli elementi fissi
+  document.body.style.paddingRight = scrollbarWidth + 'px';
+  fixedElements.forEach((el) => {
+    el.style.paddingRight = scrollbarWidth + 'px';
+  });
+  
+  // Apri il menu e blocca lo scroll
   sidebar.classList.add('open');
   navOverlay.classList.add('active');
   navOverlay.removeAttribute('hidden');
   menuBtn.setAttribute('aria-expanded', 'true');
   document.body.style.overflow = 'hidden';
 
-  // Sposta il contenuto solo su desktop
+  // Sposta il contenuto principale su desktop
   if (window.innerWidth >= 1000) {
     mainContent.classList.add('content-shifted');
   }
 }
 
 function closeMenu() {
+  // Rimuovi il padding dal body e dagli elementi fissi
+  document.body.style.paddingRight = '';
+  fixedElements.forEach((el) => {
+    el.style.paddingRight = '';
+  });
+
+  // Chiudi il menu e ripristina lo scroll
   sidebar.classList.remove('open');
   navOverlay.classList.remove('active');
   navOverlay.setAttribute('hidden', '');
   menuBtn.setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
 
-  // Rimuovi lo spostamento del contenuto
+  // Rimuovi lo spostamento del contenuto principale
   mainContent.classList.remove('content-shifted');
 }
-
-
-
 
 // Aggiungi gli event listener UNA SOLA VOLTA
 if (menuBtn && navOverlay) {
