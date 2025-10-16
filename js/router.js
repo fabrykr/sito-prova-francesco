@@ -1,11 +1,13 @@
 const content = document.getElementById('content');
 const footerContainer = document.getElementById('footer');
 
+// Salva la panoramica già presente in index.html (main#content)
 const initialPanoramica = content.innerHTML;
 
 const VALID_PAGES = new Set(['storia', 'locali', 'riconoscimenti', 'galleria', 'progetti']);
 
 let currentController = null;
+
 async function loadHTML(url, target) {
   try {
     currentController?.abort();
@@ -29,11 +31,15 @@ async function router() {
     await loadHTML(`templates/${slug}.html`, content);
     window.initUI?.();
   } else {
+    // Mostra panoramica statica al load e quando navighi su "Panoramica"
     content.innerHTML = initialPanoramica;
     window.initUI?.();
   }
 
+  // Carica sempre il footer giusto dalla cartella templates
   await loadHTML('templates/footer.html', footerContainer);
+
+  // (Opzionale) Scroll to top all'hash nav
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
