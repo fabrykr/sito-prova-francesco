@@ -128,7 +128,43 @@ h1 {
   }
 }
 
-/* Hamburger: fisso a margine destro, sotto header */
+#sidebar {
+  position: fixed;
+  top: var(--altezza-header);
+  right: 0;
+  bottom: 0;
+  width: 260px;
+  background: #fff;
+  box-shadow: -2px 0 10px rgba(0,0,0,.12);
+  padding: 20px;
+  padding-right: calc(20px + env(safe-area-inset-right, 0px));
+  overflow-y: auto;
+  transform: translateX(100%);  /* nascosta a destra */
+  transition: transform 0.3s ease;
+  z-index: 2000;
+}
+
+#sidebar.open {
+  transform: translateX(0);     /* visibile, scorre da destra */
+}
+
+/* Overlay blocca il resto dello schermo quando aperta */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1500;
+}
+
+.nav-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Tasto hamburger visibile sempre, posizionato a destra sopra l'header */
 .hamburger {
   position: fixed;
   top: calc(var(--altezza-header) + 12px);
@@ -140,41 +176,9 @@ h1 {
   background: #fff;
   color: var(--colore-primario);
   font-size: 22px;
+  line-height: 1;
   cursor: pointer;
   box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-}
-
-/* Sidebar posizionata a destra (off-canvas) */
-#sidebar {
-  position: fixed;
-  top: var(--altezza-header);
-  right: 0;          /* Mostra sul margine destro */
-  bottom: 0;
-  width: 260px;
-  background: #fff;
-  box-shadow: -2px 0 10px rgba(0,0,0,.12);
-  padding: 20px;
-  padding-right: calc(20px + env(safe-area-inset-right, 0px));
-  overflow-y: auto;
-  transform: translateX(100%); /* nascosta a destra */
-  transition: transform 0.28s ease;
-  z-index: 2000;
-}
-#sidebar.open { transform: translateX(0); }
-
-/* Overlay */
-.nav-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.3);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .2s ease;
-  z-index: 1500;
-}
-.nav-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 /* Desktop: mostra sidebar a destra e nasconde hamburger o meno */
