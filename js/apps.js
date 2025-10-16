@@ -41,22 +41,34 @@
   const menuBtn = document.getElementById('menuToggle');
   const sidebar = document.getElementById('sidebar');
   const navOverlay = document.getElementById('navOverlay');
-
+  
   function openMenu() {
-    sidebar?.classList.add('open');
-    navOverlay?.classList.add('active');
-    navOverlay?.removeAttribute('hidden');
-    menuBtn?.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
+    sidebar.classList.add('open');
+    navOverlay.classList.add('active');
+    navOverlay.removeAttribute('hidden');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';  // blocca scroll dietro menu
   }
-
+  
   function closeMenu() {
-    sidebar?.classList.remove('open');
-    navOverlay?.classList.remove('active');
-    navOverlay?.setAttribute('hidden', '');
-    menuBtn?.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
+    sidebar.classList.remove('open');
+    navOverlay.classList.remove('active');
+    navOverlay.setAttribute('hidden', '');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';         // riabilita scroll
   }
+  
+  menuBtn.addEventListener('click', () => {
+    const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+    expanded ? closeMenu() : openMenu();
+  }, { passive: true });
+  
+  navOverlay.addEventListener('click', closeMenu, { passive: true });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  }, { passive: true });
+
 
   window.closeMenu = closeMenu; // ESPOSTO globalmente
 
