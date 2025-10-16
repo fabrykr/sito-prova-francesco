@@ -58,6 +58,8 @@
     document.body.style.overflow = '';
   }
 
+  window.closeMenu = closeMenu; // ESPOSTO globalmente
+
   if(menuBtn) {
     menuBtn.addEventListener('click', () => {
       const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
@@ -253,7 +255,7 @@ document.querySelectorAll('.mappa-locali').forEach(el => {
   }
 
   window.initUI = function initUI() {
-    closeMenu?.();
+    window.closeMenu();
     bindCarousel();
     setupReveal();
   };
