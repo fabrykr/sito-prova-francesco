@@ -109,6 +109,9 @@ if (menuBtn && navOverlay) {
 }
 
 window.closeMenu = closeMenu; // Esponi globalmente se necessario
+// Inserisci questa riga in apps.js
+window.isNavigationLocked = () => sidebar.classList.contains('open') || document.getElementById('overlayFoto').classList.contains('active');
+
 
   function bindModalOnce() {
     if (window.__modalBound) return;
