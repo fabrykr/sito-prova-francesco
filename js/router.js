@@ -1,11 +1,9 @@
-// js/router.js
 const content = document.getElementById('content');
 const footerContainer = document.getElementById('footer');
 
-// Salva la panoramica già renderizzata in index.html
 const initialPanoramica = content.innerHTML;
 
-const VALID_PAGES = new Set(['storia','locali','riconoscimenti','galleria','progetti']);
+const VALID_PAGES = new Set(['storia', 'locali', 'riconoscimenti', 'galleria', 'progetti']);
 
 let currentController = null;
 async function loadHTML(url, target) {
@@ -31,7 +29,6 @@ async function router() {
     await loadHTML(`templates/${slug}.html`, content);
     window.initUI?.();
   } else {
-    // Ripristina la panoramica senza fetch esterno
     content.innerHTML = initialPanoramica;
     window.initUI?.();
   }
@@ -42,5 +39,3 @@ async function router() {
 
 window.addEventListener('hashchange', router);
 window.addEventListener('DOMContentLoaded', router);
-  document.getElementById('sidebar')?.classList.toggle('open');
-});
