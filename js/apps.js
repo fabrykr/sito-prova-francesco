@@ -46,48 +46,24 @@ const fixedElements = document.querySelectorAll('header, .hamburger');
 const mainContent = document.getElementById('content');
 
 function openMenu() {
-  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-
-  // Applica la compensazione al body E al contenitore principale
-  document.body.style.paddingRight = scrollbarWidth + 'px';
-  mainContent.style.paddingRight = scrollbarWidth + 'px'; // <-- AGGIUNTA CHIAVE
-
-  // Compensa gli elementi fissi aggiornando la loro posizione 'right'
-  fixedElements.forEach((el) => {
-    const currentRight = window.getComputedStyle(el).right;
-    el.style.right = `calc(${currentRight} + ${scrollbarWidth}px)`;
-  });
-  
-  // Apri il menu e blocca lo scroll
   sidebar.classList.add('open');
   navOverlay.classList.add('active');
   navOverlay.removeAttribute('hidden');
   menuBtn.setAttribute('aria-expanded', 'true');
   document.body.style.overflow = 'hidden';
 
-  // Sposta il contenuto principale su desktop se la sidebar è aperta
   if (window.innerWidth >= 1000) {
     mainContent.classList.add('content-shifted');
   }
 }
 
 function closeMenu() {
-  // Rimuovi tutta la compensazione
-  document.body.style.paddingRight = '';
-  mainContent.style.paddingRight = ''; // <-- AGGIUNTA CHIAVE
-
-  fixedElements.forEach((el) => {
-    el.style.right = ''; 
-  });
-
-  // Chiudi il menu e ripristina lo scroll
   sidebar.classList.remove('open');
   navOverlay.classList.remove('active');
   navOverlay.setAttribute('hidden', '');
   menuBtn.setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
 
-  // Rimuovi lo spostamento del contenuto principale
   mainContent.classList.remove('content-shifted');
 }
 
