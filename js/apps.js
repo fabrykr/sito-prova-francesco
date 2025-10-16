@@ -43,6 +43,40 @@
     window.__uiGlobalsBound = true;
   }
 
+  // Toggle sidebar accessibile
+const menuBtn = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const navOverlay = document.getElementById('navOverlay');
+
+function openMenu() {
+  sidebar?.classList.add('open');
+  navOverlay?.classList.add('active');
+  navOverlay?.removeAttribute('hidden');
+  menuBtn?.setAttribute('aria-expanded', 'true'); // aria-expanded: true
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  sidebar?.classList.remove('open');
+  navOverlay?.classList.remove('active');
+  navOverlay?.setAttribute('hidden', '');
+  menuBtn?.setAttribute('aria-expanded', 'false'); // aria-expanded: false
+  document.body.style.overflow = '';
+}
+
+menuBtn?.addEventListener('click', () => {
+  const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+  expanded ? closeMenu() : openMenu();
+}, { passive: true });
+
+navOverlay?.addEventListener('click', closeMenu, { passive: true });
+
+// ESC chiude il menu (riusa l’handler globale se già presente)
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeMenu();
+}, { passive: true });
+
+
   // Modale foto: bind una sola volta (elementi fuori dal router)
   function bindModalOnce() {
     if (window.__modalBound) return;
