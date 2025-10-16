@@ -42,19 +42,24 @@ const menuBtn = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
 const navOverlay = document.getElementById('navOverlay');
 
-// Seleziona TUTTI gli elementi posizionati in modo fisso
 const fixedElements = document.querySelectorAll('header, .hamburger');
 const mainContent = document.getElementById('content');
 
 function openMenu() {
-  // Calcola la larghezza della scrollbar
   const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 
-  // Applica la compensazione a tutti gli elementi che ne hanno bisogno
+  const fixedElements = document.querySelectorAll('header, .hamburger');
+const mainContent = document.getElementById('content');
+
+function openMenu() {
+  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+  // Applica la compensazione al body E al contenitore principale
   document.body.style.paddingRight = scrollbarWidth + 'px';
+  mainContent.style.paddingRight = scrollbarWidth + 'px'; // <-- AGGIUNTA CHIAVE
+
+  // Compensa gli elementi fissi aggiornando la loro posizione 'right'
   fixedElements.forEach((el) => {
-    // Invece di 'paddingRight', modifichiamo direttamente 'right' per gli elementi posizionati
-    // Se un elemento ha un 'right' definito (es. '12px'), lo aggiorniamo
     const currentRight = window.getComputedStyle(el).right;
     el.style.right = `calc(${currentRight} + ${scrollbarWidth}px)`;
   });
@@ -66,17 +71,19 @@ function openMenu() {
   menuBtn.setAttribute('aria-expanded', 'true');
   document.body.style.overflow = 'hidden';
 
-  // Sposta il contenuto principale su desktop
+  // Sposta il contenuto principale su desktop se la sidebar è aperta
   if (window.innerWidth >= 1000) {
     mainContent.classList.add('content-shifted');
   }
 }
 
 function closeMenu() {
-  // Rimuovi la compensazione (ripristina gli stili originali)
+  // Rimuovi tutta la compensazione
   document.body.style.paddingRight = '';
+  mainContent.style.paddingRight = ''; // <-- AGGIUNTA CHIAVE
+
   fixedElements.forEach((el) => {
-    el.style.right = ''; // Rimuovendo lo stile inline, torna al valore del CSS
+    el.style.right = ''; 
   });
 
   // Chiudi il menu e ripristina lo scroll
@@ -89,6 +96,8 @@ function closeMenu() {
   // Rimuovi lo spostamento del contenuto principale
   mainContent.classList.remove('content-shifted');
 }
+
+
 
 
 // Aggiungi gli event listener UNA SOLA VOLTA
