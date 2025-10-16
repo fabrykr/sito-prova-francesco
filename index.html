@@ -4,48 +4,48 @@
   <script src="js/apps.js" defer></script>
   <script src="js/router.js" defer></script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="La storia e le creazioni di Francesco Oppido, Pizza Chef. Scopri i suoi locali, i riconoscimenti e le sue pizze d'autore.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="La storia e le creazioni di Francesco Oppido, Pizza Chef. Scopri i suoi locali, i riconoscimenti e le sue pizze d'autore." />
   <title>Francesco Oppido - Pizza Chef</title>
 
-  <!-- Facoltativo: preconnect e nuovo endpoint Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <header>
-  <div class="header-content">
-    <h1>Francesco Oppido</h1>
-    <div class="sottotitolo">- Pizza Chef -</div>
+    <div class="header-content">
+      <h1>Francesco Oppido</h1>
+      <div class="sottotitolo">- Pizza Chef -</div>
+    </div>
+    <button id="menuToggle"
+            class="hamburger"
+            aria-label="Apri menu"
+            aria-controls="sidebar"
+            aria-expanded="false">☰</button>
+  </header>
+
+  <div id="navOverlay" class="nav-overlay" hidden></div>
+
+  <nav id="sidebar" aria-label="Approfondimenti">
+    <ul>
+      <li><a href="#">Panoramica</a></li>
+      <li><a href="#page/storia">La mia storia</a></li>
+      <li><a href="#page/locali">I miei locali</a></li>
+      <li><a href="#page/riconoscimenti">Riconoscimenti & TV</a></li>
+      <li><a href="#page/galleria">Galleria</a></li>
+      <li><a href="#page/progetti">Progetti</a></li>
+    </ul>
+  </nav>
+
+  <!-- FOTO PERSONALE -->
+  <div class="foto-wrapper" id="fotoWrapper">
+    <img id="fotoProfilo" class="foto-personale"
+         src="https://i.ibb.co/bRg956Sj/Generated-Image-October-14-2025-6-01-PM.png"
+         alt="Foto Francesco Oppido" />
   </div>
-
-  <!-- Pulsante hamburger accessibile -->
-  <button id="menuToggle"
-          class="hamburger"
-          aria-label="Apri menu"
-          aria-controls="sidebar"
-          aria-expanded="false">☰</button>
-</header>
-
-<!-- Overlay per chiudere con tap/click fuori dal menu -->
-<div id="navOverlay" class="nav-overlay" hidden></div>
-
-<!-- SIDEBAR corretta -->
-<nav id="sidebar" aria-label="Approfondimenti">
-  <ul>
-    <li><a href="#">Panoramica</a></li>
-    <li><a href="#page/storia">La mia storia</a></li>
-    <li><a href="#page/locali">I miei locali</a></li>
-    <li><a href="#page/riconoscimenti">Riconoscimenti & TV</a></li>
-    <li><a href="#page/galleria">Galleria</a></li>
-    <li><a href="#page/progetti">Progetti</a></li>
-  </ul>
-</nav>
-
-
 
   <!-- OVERLAY / MODALE FOTO -->
   <div
@@ -66,7 +66,7 @@
     />
   </div>
   
-<!-- CONTENUTO VISIBILE -->
+  <!-- CONTENUTO VISIBILE INIZIALE (PANORAMICA) -->
   <main id="content">
     <section id="storia">
       <h2>La mia storia</h2>
@@ -76,7 +76,6 @@
       <p>Amo le pizze servite a spicchi, da condividere. Perché, in fondo, la mia storia è proprio questa: un percorso fatto di condivisione, di sapori sinceri e di voglia continua di reinventare la tradizione.</p>
       <p><a href="#page/storia" class="approfondisci">Approfondisci →</a></p>
     </section>
-
 
     <section id="locali">
       <h2>I miei locali</h2>
@@ -100,7 +99,7 @@
           />
         </div>
       </div>
-    <p><a href="#page/locali" class="approfondisci">Approfondisci →</a></p>
+      <p><a href="#page/locali" class="approfondisci">Approfondisci →</a></p>
     </section>
 
     <section id="riconoscimenti">
@@ -110,7 +109,7 @@
         <li>Storie Dipinte: 50 Top Pizza &gt; Pizzerie Eccellenti</li>
         <li>...</li>
       </ul>
-    <p><a href="#page/riconoscimenti" class="approfondisci">Approfondisci →</a></p>
+      <p><a href="#page/riconoscimenti" class="approfondisci">Approfondisci →</a></p>
     </section>
 
     <section id="galleria">
@@ -138,7 +137,7 @@
         <button class="prev" id="prevBtn" aria-label="Slide precedente">❮</button>
         <button class="next" id="nextBtn" aria-label="Slide successiva">❯</button>
       </div>
-    <p><a href="#page/galleria" class="approfondisci">Approfondisci →</a></p>
+      <p><a href="#page/galleria" class="approfondisci">Approfondisci →</a></p>
     </section>
 
     <section id="progetti">
@@ -147,12 +146,10 @@
         <li>Nuova apertura a Crotone...</li>
         <li>..............</li>
       </ul>
-    <p><a href="#page/progetti" class="approfondisci">Approfondisci →</a></p>
+      <p><a href="#page/progetti" class="approfondisci">Approfondisci →</a></p>
     </section>
-
   </main>
 
-  <!-- FOOTER RIUTILIZZABILE -->
   <div id="footer"></div>
 
 </body>
