@@ -33,7 +33,7 @@ async function router() {
     window.initUI?.();
   }
 
-  await loadHTML('footer.html', footerContainer);
+  await loadHTML('templates/footer.html', footerContainer);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
