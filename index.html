@@ -17,22 +17,24 @@
 </head>
 <body>
   <header>
-    <div class="header-content">
-      <h1>Francesco Oppido</h1>
-      <div class="sottotitolo">- Pizza Chef -</div>
-    </div>
-  </header>
-
-  <!-- FOTO PERSONALE -->
-  <div class="foto-wrapper" id="fotoWrapper">
-    <img id="fotoProfilo" class="foto-personale"
-         src="https://i.ibb.co/bRg956Sj/Generated-Image-October-14-2025-6-01-PM.png"
-         alt="Foto Francesco Oppido" />
+  <div class="header-content">
+    <h1>Francesco Oppido</h1>
+    <div class="sottotitolo">- Pizza Chef -</div>
   </div>
 
-  <!-- SIDEBAR -->
+  <!-- Pulsante hamburger accessibile -->
+  <button id="menuToggle"
+          class="hamburger"
+          aria-label="Apri menu"
+          aria-controls="sidebar"
+          aria-expanded="false">☰</button>
+</header>
+
+<!-- Overlay per chiudere con tap/click fuori dal menu -->
+<div id="navOverlay" class="nav-overlay" hidden></div>
+
+<!-- SIDEBAR corretta -->
 <nav id="sidebar" aria-label="Approfondimenti">
-  <button id="toggleSidebar" aria-label="Apri/Chiudi menu">☰</button>
   <ul>
     <li><a href="#">Panoramica</a></li>
     <li><a href="#page/storia">La mia storia</a></li>
@@ -42,6 +44,7 @@
     <li><a href="#page/progetti">Progetti</a></li>
   </ul>
 </nav>
+
 
 
   <!-- OVERLAY / MODALE FOTO -->
