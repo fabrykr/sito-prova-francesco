@@ -8,6 +8,7 @@
 }
 
 html { scroll-behavior: smooth; }
+html { scroll-padding-top: calc(var(--altezza-header) + env(safe-area-inset-top)); }
 body {
   font-family: var(--font-principale);
   margin: 0;
@@ -65,28 +66,33 @@ h1 {
   margin: 0;
 }
 
-/* SIDEBAR laterale */
 #sidebar {
   position: fixed;
   top: var(--altezza-header);
   left: 0;
-  height: calc(100vh - var(--altezza-header));
+  right: auto;                 /* assicurati non ci sia right */
+  bottom: 0;                   /* riempi fino in fondo senza 100vh */
+  /* rimuovi: height: calc(100vh - var(--altezza-header)); */
   width: 240px;
   background: #fff;
   box-shadow: 2px 0 6px rgba(0,0,0,.1);
   padding: 20px;
+  padding-left: calc(20px + env(safe-area-inset-left)); /* notch sinistro */
   overflow-y: auto;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   z-index: 2000;
 }
+
 #sidebar.open { transform: translateX(0); }
 #sidebar button {
-  position: absolute; top: 10px; right: -45px;
+  position: absolute; top: 10px;
+  right: calc(-45px + env(safe-area-inset-right));
   width: 40px; height: 40px;
   border: none; background: var(--colore-primario);
   color: white; border-radius: 50%; cursor: pointer;
 }
+
 #sidebar ul { list-style: none; padding: 0; }
 #sidebar a {
   display: block;
@@ -161,6 +167,7 @@ footer {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.85);
+  -webkit-backdrop-filter: blur(5px); /* supporto iOS */
   backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
@@ -169,8 +176,9 @@ footer {
   pointer-events: none;
   transition: opacity 0.35s ease;
   z-index: 3000;
-  min-height: 100svh; /* stabile con toolbar visibili */
+  min-height: 100svh;
 }
+
 .foto-overlay.active {
   opacity: 1;
   pointer-events: all;
@@ -326,14 +334,6 @@ button.prev:hover, button.next:hover { color: #fff; }
     opacity: 1;
     transform: none;
   }
-}
-
-/* Reveal base */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; will-change: transform, opacity; }
-.reveal.in-view { opacity: 1; transform: translateY(0); }
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal { transition: none; opacity: 1; transform: none; }
 }
 
 .mappa-locali.reveal.in-view:hover { transform: translateY(0) scale(1.05); }
