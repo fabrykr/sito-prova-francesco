@@ -139,14 +139,15 @@ h1 {
   padding: 20px;
   padding-right: calc(20px + env(safe-area-inset-right, 0px));
   overflow-y: auto;
-  transform: translateX(100%);  /* nascosta a destra */
+  transform: translateX(100%);
   transition: transform 0.3s ease;
   z-index: 2000;
 }
 
 #sidebar.open {
-  transform: translateX(0);     /* visibile, scorre da destra */
+  transform: translateX(0);
 }
+
 
 /* Overlay blocca il resto dello schermo quando aperta */
 .nav-overlay {
