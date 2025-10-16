@@ -1,66 +1,56 @@
-const content = document.getElementById("content");
-const footerContainer = document.getElementById("footer");
+// js/router.js
 
-// Funzione per caricare HTML esterno
+const content = document.getElementById('content');
+const footerContainer = document.getElementById('footer');
+
+const VALID_PAGES = new Set(['storia', 'locali', 'riconoscimenti', 'galleria', 'progetti']); // slugs permessi
+
+// Carica HTML esterno con gestione errori e abort recente
+let currentController = null;
 async function loadHTML(url, target) {
-  const res = await fetch(url);
-  const html = await res.text();
-  target.innerHTML = html;
+  try {
+    // aborta eventuale richiesta precedente se ancora in corso
+    currentController?.abort();
+    currentController = new AbortController();
+
+    const res = await fetch(url, { signal: currentController.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status} su ${url}`);
+    const html = await res.text();
+    target.innerHTML = html;
+  } catch (err) {
+    if (err.name === 'AbortError') return; // navigazione veloce: ignora
+    target.innerHTML = '<section><h2>Ops…</h2><p>Contenuto non disponibile al momento.</p></section>';
+    // console.error(err); // opzionale: log
+  }
 }
 
-// Load footer all’avvio
-loadHTML("footer.html", footerContainer);
+// Router principale: panoramica o pagina di approfondimento
 async function router() {
-  const hash = window.location.hash;
+  const rawHash = window.location.hash || '';
+  const isPage = rawHash.startsWith('#page/');
+  const slug = isPage ? rawHash.replace('#page/', '') : '';
 
-  if (hash.startsWith("#page/")) {
-    const page = hash.replace("#page/", "");
-    await loadHTML(`templates/${page}.html`, content);
-    window.initUI?.(); // inizializza componenti nella pagina di approfondimento
+  if (isPage && VALID_PAGES.has(slug)) {
+    await loadHTML(`templates/${slug}.html`, content);
+    window.initUI?.(); // ricollega componenti dinamici
+    // vai all’inizio contenuto
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   } else {
-    await loadHTML("templates/panoramica.html", content);
-    window.initUI?.(); // inizializza componenti nella panoramica
+    // panoramica (template estratto dalla pagina principale)
+    await loadHTML('templates/panoramica.html', content);
+    window.initUI?.();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  await loadHTML("footer.html", footerContainer); // footer comune
+  // (Ri)carica footer comune
+  await loadHTML('footer.html', footerContainer);
 }
 
+// Bind eventi di navigazione (una sola volta)
+window.addEventListener('hashchange', router); // SPA hash routing [web:294]
+window.addEventListener('DOMContentLoaded', router); // primo render quando il DOM è pronto [web:45]
 
-// Routing: #page/nome o #inizio
-window.addEventListener("hashchange", router);
-window.addEventListener("DOMContentLoaded", router);
-
-async function router() {
-  const hash = window.location.hash;
-
-  if (hash.startsWith("#page/")) {
-    const page = hash.replace("#page/", "");
-    await loadHTML(`templates/${page}.html`, content);
-  } else {
-    // Torna alla panoramica (index)
-    await loadHTML("templates/panoramica.html", content);
-  }
-
-  // Carica di nuovo footer identico
-  loadHTML("footer.html", footerContainer);
-  async function router() {
-  const hash = window.location.hash;
-
-  if (hash.startsWith("#page/")) {
-    const page = hash.replace("#page/", "");
-    await loadHTML(`templates/${page}.html`, content);
-    window.initUI?.(); // inizializza componenti nella pagina di approfondimento
-  } else {
-    await loadHTML("templates/panoramica.html", content);
-    window.initUI?.(); // inizializza componenti nella panoramica
-  }
-
-  await loadHTML("footer.html", footerContainer); // footer comune
-}
-
-
-// Sidebar toggle per mobile
-document.getElementById("toggleSidebar")?.addEventListener("click", () => {
-  document.getElementById("sidebar").classList.toggle("open");
+// Toggle sidebar per mobile
+document.getElementById('toggleSidebar')?.addEventListener('click', () => {
+  document.getElementById('sidebar')?.classList.toggle('open');
 });
-
