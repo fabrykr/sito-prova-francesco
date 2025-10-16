@@ -120,14 +120,65 @@ main#content { margin-left: 0; transition: margin-left 0.3s ease; }
   #toggleSidebar { display: none; }
 }
 
-/* Footer globale */
-footer {
-  background: #fff7ea;
-  border-top: 4px solid var(--colore-primario);
-  padding: 30px;
-  margin-top: 60px;
-  text-align: center;
+/* Footer globale — tinta unita moderna, links non blu */
+.site-footer {
+  background: #111318;       /* grigio antracite più elegante */
+  color: #f2f3f4;            /* testo chiaro leggibile */
+  padding: 28px 0;
+  border-top: none;
 }
+
+.site-footer a {
+  color: #f2f3f4;            /* niente blu di default */
+  text-decoration: none;
+}
+.site-footer a:hover,
+.site-footer a:focus {
+  color: var(--colore-accento); /* richiamo dorato del brand */
+  text-decoration: underline;
+  outline: none;
+}
+
+/* Due colonne affiancate (stack su mobile) */
+.footer-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 8%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr)); /* Locale | Contatti */
+  gap: 18px 32px;
+}
+@media (max-width: 640px) {
+  .footer-inner { grid-template-columns: 1fr; }
+}
+
+.footer-title {
+  font-weight: 700;
+  letter-spacing: .5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  opacity: .9;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;          /* tap target comodo */
+  padding: 6px 0;
+}
+.ig-icon { display: inline-block; flex: 0 0 auto; color: currentColor; }
+
+/* Safe-area per barre/nottch */
+.safe-area-bottom {
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Sticky footer (già usato in pagina) */
+html, body { height: 100%; }
+body { display: flex; flex-direction: column; }
+main#content { flex: 1 0 auto; }
+#footer { margin-top: auto; width: 100%; }
 
 
 .sottotitolo {
