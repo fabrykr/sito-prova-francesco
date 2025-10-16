@@ -20,6 +20,12 @@ body {
   line-height: 1.6;
 }
 
+html, body { height: 100%; } /* base per sticky footer */
+body { display: flex; flex-direction: column; } /* colonna */
+main#content { flex: 1 0 auto; } /* occupa lo spazio disponibile */
+#footer { margin-top: auto; } /* spinge il footer in basso */
+
+
 /* background immagine soft - STABILE su mobile */
 body::before {
   content: "";
