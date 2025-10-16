@@ -9,6 +9,7 @@
 
 /* Ancoraggio scroll per header fisso */
 html {
+  scrollbar-gutter: stable;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--altezza-header) + env(safe-area-inset-top));
 }
