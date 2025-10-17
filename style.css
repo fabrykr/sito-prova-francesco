@@ -3,23 +3,21 @@
   --colore-accento: #d4af37;
   --colore-testo: #222;
   --colore-sfondo: #fff;
-  --altezza-header: 260px; /* Altezza per Desktop */
+  --altezza-header-desktop: 260px;
+  --altezza-header-mobile: 130px; /* Nuova variabile per l'altezza mobile */
   --font-principale: 'Montserrat', sans-serif;
 }
 
-/* Ancoraggio scroll e gestione scrollbar (corretto) */
 html {
-  scrollbar-gutter: stable;
   scroll-behavior: smooth;
 }
 
-/* Layout base, sticky footer */
 body {
   font-family: var(--font-principale);
   margin: 0;
   background: var(--colore-sfondo);
   color: var(--colore-testo);
-  padding-top: var(--altezza-header); /* Padding per header fisso */
+  padding-top: var(--altezza-header-desktop); /* Default per desktop */
   overflow-x: hidden;
   line-height: 1.6;
   display: flex;
@@ -29,7 +27,6 @@ body {
 main#content { flex: 1 0 auto; }
 #footer { margin-top: auto; width: 100%; }
 
-/* Sfondo soft */
 body::before {
   content: "";
   position: fixed;
@@ -40,24 +37,21 @@ body::before {
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.11;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: transform, opacity;
   z-index: -1;
 }
 
-/* HEADER (Stile base per Desktop) */
+/* Stili base (Desktop) */
 header {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: var(--altezza-header);
+  height: var(--altezza-header-desktop);
   background-color: var(--colore-primario);
   display: flex;
   align-items: center;
   padding: 0 4%;
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   z-index: 1000;
-  box-sizing: border-box; /* Importante per gestire il padding */
+  box-sizing: border-box;
 }
 .header-content { width: 100%; position: relative; }
 h1 {
@@ -66,7 +60,6 @@ h1 {
   font-weight: 300;
   letter-spacing: 3px;
   text-transform: uppercase;
-  line-height: 1.1;
   margin: 0;
 }
 .sottotitolo {
@@ -78,7 +71,6 @@ h1 {
   text-transform: uppercase;
 }
 
-/* FOTO PERSONALE (Stile base per Desktop) */
 .foto-wrapper {
   position: absolute;
   top: 50%;
@@ -87,7 +79,6 @@ h1 {
   width: 180px;
   height: 180px;
   z-index: 1001;
-  display: block;
 }
 .foto-personale {
   width: 100%;
@@ -96,14 +87,8 @@ h1 {
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.foto-personale:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
 }
 
-/* SIDEBAR E OVERLAY */
 #sidebar {
   position: fixed;
   top: 0;
@@ -136,10 +121,11 @@ h1 {
   pointer-events: auto;
 }
 
-/* HAMBURGER - PROBLEMA 1 RISOLTO */
-/* Stile base e centratura righe */
+/* HAMBURGER - CORRETTO */
 .hamburger {
   position: fixed;
+  top: calc(var(--altezza-header-desktop) + 12px);
+  right: 12px;
   width: 44px;
   height: 44px;
   background: #fff;
@@ -153,14 +139,9 @@ h1 {
   padding: 0;
   z-index: 2100;
 }
-/* Posizione Desktop: sotto l'header */
-.hamburger {
-  top: calc(var(--altezza-header) + 12px);
-  right: 12px;
-}
 .hamburger-box {
   width: 24px;
-  height: 18px; /* Leggermente ridotta per un migliore allineamento */
+  height: 18px;
   position: relative;
 }
 .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
@@ -182,9 +163,8 @@ h1 {
 .hamburger[aria-expanded="true"] .hamburger-inner::before { top: 0; transform: rotate(-90deg); }
 .hamburger[aria-expanded="true"] .hamburger-inner::after { bottom: 0; transform: rotate(-90deg); }
 
-/* MAIN E SEZIONI (Stili base) */
 main { max-width: 1000px; margin: 50px auto; padding: 0 8%; }
-/* ... (tutte le altre regole CSS generali restano invariate) ... */
+/* ... (tutto il resto del CSS generale fino alle media query) ... */
 :where(h1,h2,h3,h4,h5,h6) { margin:0; }
 :where(ul,ol) { margin:0; padding-inline-start:1.2em; }
 p, li, a, .nome-pizza { overflow-wrap: anywhere; hyphens: auto; }
@@ -229,25 +209,25 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
 .safe-area-bottom { padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
 
 /* ============================================= */
-/* OTTIMIZZAZIONE PER DISPOSITIVI MOBILI (< 1000px) */
+/* OTTIMIZZAZIONE MOBILE FINALE E CORRETTA (< 1000px) */
 /* ============================================= */
 
 @media (max-width: 999px) {
 
-  :root {
-    --altezza-header: 120px; /* Altezza header più contenuta */
-  }
-
+  /* CORREZIONE LAYOUT GENERALE E PROBLEMA ZOOM/SCROLL INIZIALE */
   body {
-    /* Spazio per header + foto (120px + 140px/2 per la parte sotto) */
-    padding-top: calc(var(--altezza-header) + 70px);
+    padding-top: var(--altezza-header-mobile);
+  }
+  
+  main {
+    margin-top: 0; /* Il margine viene gestito spostando la foto */
+    padding: 0 6%;
   }
 
-  /* HEADER MOBILE - PROBLEMA 3 RISOLTO */
+  /* HEADER MOBILE - FISSO E VISIBILE */
   header {
-    height: var(--altezza-header);
-    align-items: center; /* Centra verticalmente il testo */
-    /* Padding per notch e per centrare */
+    height: var(--altezza-header-mobile);
+    align-items: center;
     padding: calc(env(safe-area-inset-top)) 6% 0 6%;
   }
 
@@ -259,36 +239,31 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
   h1 { font-size: 1.8rem; }
   .sottotitolo { font-size: 1rem; margin-top: 2px; }
 
-  /* FOTO PERSONALE MOBILE - PROBLEMA 2 RISOLTO */
+  /* FOTO PERSONALE MOBILE - NEL FLUSSO, SOTTO L'HEADER */
   .foto-wrapper {
-    position: fixed; /* Fissa la foto insieme all'header */
-    top: var(--altezza-header);
-    left: 50%;
-    transform: translate(-50%, -50%); /* Centra e sposta a cavallo */
+    position: relative; /* Rimosso dal flusso fisso dell'header */
     width: 140px;
     height: 140px;
-    z-index: 1001;
+    margin: 20px auto; /* Spazio sopra e sotto la foto */
+    /* Annulla completamente gli stili desktop */
+    top: auto;
+    right: auto;
+    transform: none;
+    z-index: auto;
   }
-
   .foto-personale {
-    border: 4px solid var(--colore-sfondo); /* Bordo per staccare */
+    border: none;
   }
 
-  /* HAMBURGER MOBILE - PROBLEMA 1 RISOLTO */
+  /* HAMBURGER MOBILE - SOTTO L'HEADER */
   .hamburger {
-    top: calc(env(safe-area-inset-top) + 15px); /* Allineato con la safe area */
-    right: 15px;
+    top: calc(var(--altezza-header-mobile) + 12px);
+    right: 12px;
   }
   
-  /* Stile per sidebar su mobile */
+  /* Adattamenti vari */
   #sidebar {
-    padding-top: calc(env(safe-area-inset-top) + 20px);
-  }
-
-  /* Adattamenti layout mobile */
-  main {
-    margin-top: 0;
-    padding: 0 6%;
+    padding-top: calc(var(--altezza-header-mobile) + 20px);
   }
   .locali-layout, .footer-inner {
     grid-template-columns: 1fr;
@@ -298,3 +273,4 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
   .slide { aspect-ratio: 4/3; }
   .slide img { height: 100%; max-height: none; }
 }
+
