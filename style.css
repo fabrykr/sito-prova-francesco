@@ -210,71 +210,65 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
 .ig-icon { display: inline-block; flex: 0 0 auto; color: currentColor; }
 .safe-area-bottom { padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
 
+/* FILE: style.css */
+
 /* ============================================= */
 /* OTTIMIZZAZIONE MOBILE FINALE (< 1000px) */
 /* ============================================= */
 @media (max-width: 999px) {
 
   html {
-    /* Aggiorna il padding per lo scroll in base all'altezza dell'header mobile */
-    scroll-padding-top: var(--altezza-header-mobile);
+    scroll-padding-top: 0; /* Non più necessario */
   }
 
   body {
-    /* Crea lo spazio solo per l'header fisso. La foto sarà nel flusso del body. */
-    padding-top: var(--altezza-header-mobile);
+    /* Rimuovi lo spazio vuoto in alto, l'header non è più fisso */
+    padding-top: 0; 
   }
-  
+
   main {
     margin-top: 0;
     padding: 0 6%;
   }
 
-  /* 1. HEADER MOBILE: Fisso, con padding per la notch e testo visibile */
+  /* 1. HEADER MOBILE: Non più fisso, diventa parte del body */
   header {
-    height: var(--altezza-header-mobile);
-    align-items: center;
-    padding: calc(env(safe-area-inset-top, 0px) + 8px) 6% 0 6%;
-    box-sizing: border-box;
+    position: static; /* ★ LA MAGIA È QUI ★: L'header scorre con la pagina */
+    height: auto;     /* Lascia che l'header si espanda per contenere la foto */
+    padding: 20px 6%; /* Diamo un po' di respiro */
+    text-align: center;
   }
 
-
   .header-content {
-    text-align: center;
     position: static;
   }
   
   h1 { font-size: 1.8rem; }
   .sottotitolo { font-size: 1rem; margin-top: 2px; }
 
-  /* All'interno di @media (max-width: 999px) */
-
-  /* Sostituisci questo blocco */
+  /* 2. FOTO PERSONALE MOBILE: Diventa un blocco normale dentro l'header */
   .foto-wrapper {
-    position: relative; /* O 'static', va bene lo stesso */
+    position: static;    /* ★ E QUI ★: La foto non è più "fluttuante" */
+    transform: none;     /* Rimuoviamo ogni trasformazione */
     width: 140px;
     height: 140px;
-    /* Margine semplificato per dare spazio sopra e sotto */
-    margin: 24px auto 30px;
-    z-index: 10;
-    /* Le altre proprietà (top, right, transform) non servono più */
+    margin: 24px auto 0; /* Centrata e con spazio sopra */
   }
 
-  /* Spazio per contenuto principale */
-  main {
-    margin-top: 0;
-    padding: 0 6%;
+  .foto-personale {
+    cursor: pointer; /* Riattiviamo il cursore a puntatore */
   }
-}
-  /* 3. HAMBURGER MOBILE: Fisso, sotto l'header */
+
+  /* 3. HAMBURGER MOBILE: Ancora fisso, ma con posizione corretta */
   .hamburger {
-    top: calc(var(--altezza-header-mobile) + 12px);
+    /* Aggiorniamo la posizione rispetto alla viewport, non più all'header */
+    top: 12px;
     right: 12px;
   }
   
   /* 4. Adattamenti finali */
   #sidebar {
-    padding-top: calc(var(--altezza-header-mobile) + 20px);
+    padding-top: 20px; /* Padding standard */
   }
   .locali-layout, .footer-inner {
     grid-template-columns: 1fr;
