@@ -92,68 +92,97 @@ function closeMenu() {
   }
 
   function bindModalOnce() {
-    if (window.__modalBound) return;
-    const foto = document.getElementById('fotoProfilo');
-    const overlay = document.getElementById('overlayFoto');
-    const closeOverlayBtn = document.getElementById('closeOverlay');
-    const header = document.querySelector('header');
-    let lastFocused = null;
-
-    function modalKeyHandler(e) {
-      if (e.key === 'Escape') {
-        closeModal();
-        return;
-      }
-      if (e.key === 'Tab') {
-        const focusables = overlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        const list = Array.from(focusables).filter(el => !el.hasAttribute('disabled'));
-        if (!list.length) return;
-        const first = list[0];
-        const last = list[list.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    }
-
-    function openModal() {
-      if (!overlay) return;
-      lastFocused = document.activeElement;
-      overlay.classList.add('active');
-      overlay.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      if (mainContent) mainContent.setAttribute('aria-hidden', 'true');
-      if (header) header.setAttribute('aria-hidden', 'true');
-      overlay.focus();
-      closeOverlayBtn?.focus();
-      document.addEventListener('keydown', modalKeyHandler);
-    }
-
-    function closeModal() {
-      if (!overlay) return;
-      overlay.classList.remove('active');
-      overlay.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-      if (mainContent) mainContent.removeAttribute('aria-hidden');
-      if (header) header.removeAttribute('aria-hidden');
-      document.removeEventListener('keydown', modalKeyHandler);
-      if (lastFocused && typeof lastFocused.focus === 'function') {
-        lastFocused.focus();
-      } else {
-        foto?.focus();
-      }
-    }
-
-    foto?.addEventListener('click', openModal);
-    overlay?.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
-    closeOverlayBtn?.addEventListener('click', closeModal);
-
-    window.__modalBound = true;
+  // PRIMA controlla il flag
+  if (window.__modalBound) {
+    console.log('⚠️ Modale già bindato');
+    return;
   }
+  
+  // POI verifica che gli elementi esistano
+  const foto = document.getElementById('fotoProfilo');
+  const overlay = document.getElementById('overlayFoto');
+  const closeOverlayBtn = document.getElementById('closeOverlay');
+  const header = document.querySelector('header');
+  
+  // SE NON ESISTONO, esci SENZA settare il flag
+  if (!foto || !overlay || !closeOverlayBtn) {
+    console.warn('❌ Elementi modale non trovati, binding non completato');
+    console.log('Elementi trovati:', {
+      foto: !!foto,
+      overlay: !!overlay,
+      closeBtn: !!closeOverlayBtn
+    });
+    // NON settare window.__modalBound = true qui!
+    return;
+  }
+  
+  console.log('✅ Elementi modale trovati, procedo con il binding');
+  
+  let lastFocused = null;
+
+  function modalKeyHandler(e) {
+    if (e.key === 'Escape') {
+      closeModal();
+      return;
+    }
+    if (e.key === 'Tab') {
+      const focusables = overlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const list = Array.from(focusables).filter(el => !el.hasAttribute('disabled'));
+      if (!list.length) return;
+      const first = list[0];
+      const last = list[list.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
+  function openModal() {
+    if (!overlay) return;
+    console.log('📸 Apertura modale');
+    lastFocused = document.activeElement;
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (mainContent) mainContent.setAttribute('aria-hidden', 'true');
+    if (header) header.setAttribute('aria-hidden', 'true');
+    overlay.focus();
+    closeOverlayBtn?.focus();
+    document.addEventListener('keydown', modalKeyHandler);
+  }
+
+  function closeModal() {
+    if (!overlay) return;
+    console.log('❌ Chiusura modale');
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (mainContent) mainContent.removeAttribute('aria-hidden');
+    if (header) header.removeAttribute('aria-hidden');
+    document.removeEventListener('keydown', modalKeyHandler);
+    if (lastFocused && typeof lastFocused.focus === 'function') {
+      lastFocused.focus();
+    } else {
+      foto?.focus();
+    }
+  }
+
+  // Ora che sappiamo che gli elementi esistono, aggiungi gli event listener
+  foto.addEventListener('click', openModal);
+  overlay.addEventListener('click', (e) => { 
+    if (e.target === overlay) closeModal(); 
+  });
+  closeOverlayBtn.addEventListener('click', closeModal);
+
+  // SOLO ADESSO setta il flag a true
+  window.__modalBound = true;
+  console.log('✅ Binding modale completato con successo');
+}
+
 
   function bindCarousel() {
     const carousel = document.getElementById('carousel');
@@ -269,27 +298,30 @@ function closeMenu() {
 
 // --- FUNZIONE DI INIZIALIZZAZIONE GLOBALE ---
 window.initUI = function initUI() {
+  console.log('🔧 initUI chiamata');
+  
   if (typeof window.closeMenu === 'function') {
     window.closeMenu();
   }
   bindCarousel();
   setupReveal();
   
-  // Rebind del modale solo se necessario (es. dopo navigazione SPA)
-  // Usa un delay breve per assicurarti che il DOM del router sia pronto
-  if (!window.__modalBound) {
-    setTimeout(() => {
-      bindModalOnce();
-    }, 50);
-  }
+  // Prova sempre a bindare il modale (la funzione controlla internamente)
+  setTimeout(() => {
+    console.log('🔄 Tentativo binding modale da initUI');
+    bindModalOnce();
+  }, 100); // Delay leggermente più lungo
 };
 
 // Esecuzione delle funzioni di binding all'avvio dello script
 bindGlobalEventsOnce();
 
-// Binding iniziale del modale
-// Poiché usi 'defer', il DOM è già pronto quando questo script viene eseguato
-bindModalOnce();
+// Tentativo iniziale di binding del modale
+console.log('🚀 Script apps.js caricato');
+setTimeout(() => {
+  console.log('🔄 Primo tentativo binding modale');
+  bindModalOnce();
+}, 150); // Delay per dare tempo al DOM di caricare
 
 })();
 
