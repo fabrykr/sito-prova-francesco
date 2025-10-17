@@ -90,24 +90,75 @@ h1 {
   cursor: pointer;
 }
 
+/* ================================== */
+/* STILE SIDEBAR MIGLIORATO           */
+/* ================================== */
+
 #sidebar {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 260px;
-  background: #fff;
-  box-shadow: -2px 0 10px rgba(0,0,0,.12);
-  padding: 20px;
-  padding-right: calc(20px + env(safe-area-inset-right, 0px));
+  width: 280px; /* Un po' più larga per dare respiro */
+  background: #fdfdfd; /* Un bianco leggermente "caldo", meno sterile */
+  box-shadow: -4px 0 20px rgba(0,0,0,.15);
+  padding: 25px;
+  padding-right: calc(25px + env(safe-area-inset-right, 0px));
   overflow-y: auto;
   transform: translateX(100%);
-  transition: transform 0.3s ease;
+  transition: transform 0.35s cubic-bezier(.2, .9, .3, 1); /* Transizione più fluida */
   z-index: 2000;
 }
+
 #sidebar.open {
   transform: translateX(0);
 }
+
+/* Stile per il titolo che abbiamo aggiunto */
+#sidebar h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--colore-accento); /* Usa il colore accento */
+  margin: 0 0 20px 10px; /* Spaziatura sotto e un piccolo rientro */
+  opacity: 0.9;
+}
+
+/* Pulizia della lista */
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Stile per ogni singolo link */
+#sidebar li a {
+  display: block; /* Occupa tutto lo spazio per essere più cliccabile */
+  padding: 14px 20px;
+  text-decoration: none;
+  font-weight: 600; /* Testo più deciso */
+  color: var(--colore-testo);
+  border-radius: 8px; /* Angoli smussati come nel resto del sito */
+  transition: background-color 0.2s ease, color 0.2s ease;
+  will-change: background-color, color;
+}
+
+/* Effetto al passaggio del mouse o quando si seleziona con la tastiera */
+#sidebar li a:hover,
+#sidebar li a:focus {
+  background-color: #f0f0f0; /* Sfondo grigio chiaro per feedback */
+  color: var(--colore-primario); /* Il testo diventa rosso */
+  outline: none;
+}
+
+/* (Opzionale) Stile per il link della pagina attiva, da gestire via JS */
+#sidebar li a.active {
+  background-color: var(--colore-primario);
+  color: white;
+  font-weight: 700;
+}
+
 .nav-overlay {
   position: fixed;
   inset: 0;
