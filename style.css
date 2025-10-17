@@ -247,19 +247,19 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
 
   /* 2. FOTO PERSONALE MOBILE: Non fissa, nel flusso del body */
   .foto-wrapper {
-    position: relative; /* NON più absolute/fixed */
+    position: fixed;
+    top: calc(var(--altezza-header-mobile) + 12px); /* subito sotto header */
+    left: 50%;
+    transform: translateX(-50%);
     width: 140px;
     height: 140px;
-    margin: 20px auto; /* Centra e crea spazio sopra/sotto */
-    /* Annulla completamente gli stili desktop */
-    top: auto;
-    right: auto;
-    transform: none;
-    z-index: auto;
+    z-index: 500; /* sopra lo sfondo, ma sotto sidebar */
   }
-  .foto-personale {
-    border: none;
+
+  main {
+    margin-top: calc(var(--altezza-header-mobile) + 180px); /* lascia spazio per la foto */
   }
+}
 
   /* 3. HAMBURGER MOBILE: Fisso, sotto l'header */
   .hamburger {
