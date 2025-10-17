@@ -9,10 +9,11 @@
   --colore-accento: #d4af37;
   --colore-testo: #222;
   --colore-sfondo: #fff;
-  --altezza-header-desktop: 260px;
-  --altezza-header-mobile: 130px; /* Altezza dedicata per mobile */
+  --altezza-header-desktop: 180px; /* RIDUCI da 260px a 180px */
+  --altezza-header-mobile: 100px; /* RIDUCI da 130px a 100px */
   --font-principale: 'Montserrat', sans-serif;
 }
+
 
 html {
   scroll-behavior: smooth;
@@ -22,19 +23,20 @@ html {
 body {
   font-family: var(--font-principale);
   margin: 0;
-  background: var(--colore-sfondo);
+  background: #fff; /* Bianco pulito */
   color: var(--colore-testo);
-  padding-top: var(--altezza-header-desktop); /* Default per desktop */
+  padding-top: var(--altezza-header-desktop);
   overflow-x: hidden;
   line-height: 1.6;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
+
 main#content { flex: 1 0 auto; }
 #footer { margin-top: auto; width: 100%; }
 
-body::before {
+/*body::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -45,12 +47,14 @@ body::before {
   background-repeat: no-repeat;
   opacity: 0.11;
   z-index: -1;
-}
+}/*
 
-/* Stili base (Desktop) */
+/* Header con effetto trasparenza allo scroll */
 header {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0; 
+  left: 0; 
+  right: 0;
   height: var(--altezza-header-desktop);
   background-color: var(--colore-primario);
   display: flex;
@@ -59,7 +63,26 @@ header {
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   z-index: 1000;
   box-sizing: border-box;
+  transition: all 0.3s ease; /* Transizione fluida */
 }
+
+/* Classe che verrà aggiunta via JavaScript quando si scrolla */
+header.scrolled {
+  background-color: rgba(192, 0, 0, 0.95); /* 95% opacità */
+  backdrop-filter: blur(10px); /* Effetto vetro smerigliato */
+  -webkit-backdrop-filter: blur(10px); /* Safari */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Ombra più leggera */
+  height: calc(var(--altezza-header-desktop) * 0.85); /* Riduce del 15% */
+}
+
+header.scrolled h1 {
+  font-size: clamp(1.5rem, 3.5vw, 2.3rem); /* Testo più piccolo */
+}
+
+header.scrolled .sottotitolo {
+  font-size: 1.1rem; /* Sottotitolo più piccolo */
+}
+
 .header-content { width: 100%; position: relative; }
 h1 {
   color: white;
@@ -267,6 +290,41 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: aut
 .ig-icon { display: inline-block; flex: 0 0 auto; color: currentColor; }
 .safe-area-bottom { padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
 
+/* Stile per i link contatti con icone */
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #f2f3f4;
+  text-decoration: none;
+  min-height: 44px; /* Touch-friendly */
+  padding: 4px 0;
+  transition: color 0.3s ease;
+}
+
+.contact-link:hover,
+.contact-link:focus {
+  color: var(--colore-accento);
+  text-decoration: none;
+}
+
+.contact-icon {
+  flex-shrink: 0; /* Previene il rimpicciolimento dell'icona */
+  color: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.contact-link:hover .contact-icon {
+  transform: scale(1.1); /* Leggero zoom al hover */
+}
+
+/* Assicura che tutte le icone del footer siano allineate */
+.social-link,
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
 
 .approfondisci {
   display: inline-flex;
@@ -349,7 +407,20 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: aut
     box-sizing: border-box;
     width: 100%; /* AGGIUNGI */
   }
+
+  header.scrolled {
+    height: calc(var(--altezza-header-mobile) * 0.9);
+  }
   
+  header.scrolled h1 {
+    font-size: 1.5rem;
+  }
+  
+  header.scrolled .sottotitolo {
+    font-size: 0.85rem;
+  }
+}
+
   .header-content {
     /* Assicuriamoci che non abbia posizionamenti strani */
     position: static;
@@ -446,4 +517,3 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: aut
     height: 100%;
   }
 }
-
