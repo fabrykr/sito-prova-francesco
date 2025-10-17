@@ -275,44 +275,67 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: aut
 @media (max-width: 999px) {
 
   html {
-    scroll-padding-top: 0; /* Non più necessario */
+    scroll-padding-top: var(--altezza-header-mobile); /* Mantieni invece di azzerare */
   }
 
   body {
-    padding-top: var(--altezza-header-mobile); /* Mantiene lo spazio per l'header fisso */
+    padding-top: var(--altezza-header-mobile); /* Questa è corretta */
+    /* AGGIUNGI: */
+    min-height: 100vh;
+    min-height: 100svh; /* Supporto per Safari mobile */
   }
-
+  
   main {
     margin-top: 0;
-    padding: 0 6%;
+    padding: 20px 6% 40px; /* AGGIUNGI padding verticale esplicito */
+    width: 100%; /* AGGIUNGI */
+    max-width: 100%; /* AGGIUNGI */
+    box-sizing: border-box; /* AGGIUNGI */
   }
 
   /* 1. HEADER MOBILE: Non più fisso, diventa parte del body */
   header {
-    /* L'header mobile torna ad essere semplice e fisso */
+    position: fixed; /* Mantieni fisso */
+    top: 0;
+    left: 0;
+    right: 0;
     height: var(--altezza-header-mobile);
     align-items: center;
-    text-align: center; /* Centra il testo */
-    padding: calc(env(safe-area-inset-top, 0px) + 8px) 6% 0 6%;
+    justify-content: center; /* AGGIUNGI */
+    text-align: center;
+    padding: calc(env(safe-area-inset-top, 0px) + 12px) 6% 12px 6%; /* MODIFICA */
     box-sizing: border-box;
+    width: 100%; /* AGGIUNGI */
   }
-
+  
   .header-content {
     /* Assicuriamoci che non abbia posizionamenti strani */
     position: static;
     width: 100%;
   }
+
+  section:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  #storia {
+    padding-top: 0; /* Rimuovi padding extra sulla prima sezione */
+  }
+
   
   h1 { font-size: 1.8rem; }
   .sottotitolo { font-size: 1rem; margin-top: 2px; }
 
   /* 2. FOTO PERSONALE MOBILE: Diventa un blocco normale dentro l'header */
   .foto-wrapper {
-    /* Adattiamo solo la dimensione e i margini per il mobile */
-    width: 140px;
-    height: 140px;
-    margin: 24px auto 30px; /* Margini ridotti per mobile */
+    width: 120px;  /* Riduci leggermente */
+    height: 120px;
+    margin: 20px auto 24px; /* Riduci margini verticali */
+    display: block; /* AGGIUNGI questa riga */
+    clear: both; /* AGGIUNGI questa riga */
   }
+
   .foto-personale {
     cursor: pointer; /* Riattiviamo il cursore a puntatore */
   }
