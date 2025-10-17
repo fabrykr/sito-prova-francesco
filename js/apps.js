@@ -275,20 +275,22 @@ window.initUI = function initUI() {
   bindCarousel();
   setupReveal();
   
-  // Attendi che il DOM sia completamente pronto prima di bindare il modale
-  setTimeout(() => {
-    bindModalOnce();
-  }, 100); // Piccolo delay per assicurarsi che il DOM sia pronto
+  // Rebind del modale solo se necessario (es. dopo navigazione SPA)
+  // Usa un delay breve per assicurarti che il DOM del router sia pronto
+  if (!window.__modalBound) {
+    setTimeout(() => {
+      bindModalOnce();
+    }, 50);
+  }
 };
 
 // Esecuzione delle funzioni di binding all'avvio dello script
 bindGlobalEventsOnce();
 
-// Chiama bindModalOnce solo dopo che il DOM è completamente caricato
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', bindModalOnce);
-} else {
-  // DOM già caricato, esegui subito
-  bindModalOnce();
-}
+// Binding iniziale del modale
+// Poiché usi 'defer', il DOM è già pronto quando questo script viene eseguato
+bindModalOnce();
+
+})();
+
 
