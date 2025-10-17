@@ -72,15 +72,13 @@ h1 {
   text-transform: uppercase;
 }
 
-/* Sostituisci questo blocco nel tuo CSS */
+/* Sostituisci la vecchia regola .foto-wrapper con questa */
 .foto-wrapper {
-  position: fixed; /* Cambiato da absolute a fixed */
-  top: 40px; /* Calcolato per centrare (260px altezza header - 180px altezza foto) / 2 */
-  right: 4%;
+  position: relative; /* Posizionamento normale, non più fisso o assoluto */
   width: 180px;
   height: 180px;
-  z-index: 1001;
-  /* La proprietà 'transform' non è più necessaria qui */
+  margin: 40px auto; /* 40px di spazio sopra/sotto, e centrato orizzontalmente */
+  z-index: 10; /* Un valore basso, serve solo per sicurezza */
 }
 
 .foto-personale {
@@ -124,6 +122,7 @@ h1 {
   pointer-events: auto;
 }
 
+/* Ripristina la regola corretta per l'hamburger da desktop */
 .hamburger {
   position: fixed;
   top: calc(var(--altezza-header-desktop) + 12px);
@@ -141,6 +140,7 @@ h1 {
   padding: 0;
   z-index: 2100;
 }
+
 .hamburger-box {
   width: 24px;
   height: 18px;
@@ -222,8 +222,7 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
   }
 
   body {
-    /* Rimuovi lo spazio vuoto in alto, l'header non è più fisso */
-    padding-top: 0; 
+    padding-top: var(--altezza-header-mobile); /* Mantiene lo spazio per l'header fisso */
   }
 
   main {
@@ -233,14 +232,18 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
 
   /* 1. HEADER MOBILE: Non più fisso, diventa parte del body */
   header {
-    position: static; /* ★ LA MAGIA È QUI ★: L'header scorre con la pagina */
-    height: auto;     /* Lascia che l'header si espanda per contenere la foto */
-    padding: 20px 6%; /* Diamo un po' di respiro */
-    text-align: center;
+    /* L'header mobile torna ad essere semplice e fisso */
+    height: var(--altezza-header-mobile);
+    align-items: center;
+    text-align: center; /* Centra il testo */
+    padding: calc(env(safe-area-inset-top, 0px) + 8px) 6% 0 6%;
+    box-sizing: border-box;
   }
 
   .header-content {
+    /* Assicuriamoci che non abbia posizionamenti strani */
     position: static;
+    width: 100%;
   }
   
   h1 { font-size: 1.8rem; }
@@ -248,21 +251,19 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
 
   /* 2. FOTO PERSONALE MOBILE: Diventa un blocco normale dentro l'header */
   .foto-wrapper {
-    position: static;    /* ★ E QUI ★: La foto non è più "fluttuante" */
-    transform: none;     /* Rimuoviamo ogni trasformazione */
+    /* Adattiamo solo la dimensione e i margini per il mobile */
     width: 140px;
     height: 140px;
-    margin: 24px auto 0; /* Centrata e con spazio sopra */
+    margin: 24px auto 30px; /* Margini ridotti per mobile */
   }
-
   .foto-personale {
     cursor: pointer; /* Riattiviamo il cursore a puntatore */
   }
 
   /* 3. HAMBURGER MOBILE: Ancora fisso, ma con posizione corretta */
   .hamburger {
-    /* Aggiorniamo la posizione rispetto alla viewport, non più all'header */
-    top: 12px;
+    /* Posizioniamo l'hamburger correttamente sotto l'header mobile */
+    top: calc(var(--altezza-header-mobile) + 12px);
     right: 12px;
   }
   
