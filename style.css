@@ -267,6 +267,48 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: aut
 .ig-icon { display: inline-block; flex: 0 0 auto; color: currentColor; }
 .safe-area-bottom { padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
 
+
+.approfondisci {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  margin-top: 16px;
+  background: transparent;
+  color: var(--colore-primario);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  border: 2px solid var(--colore-accento);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Effetto riempimento dal basso */
+.approfondisci::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: var(--colore-accento);
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.approfondisci:hover {
+  color: var(--colore-testo);
+  border-color: var(--colore-accento);
+}
+
+.approfondisci:hover::before {
+  height: 100%;
+}
 /* FILE: style.css */
 
 /* ============================================= */
@@ -358,5 +400,11 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: aut
   .galleria-pizze, .slide { max-width: 100%; }
   .slide { aspect-ratio: 4/3; }
   .slide img { height: 100%; max-height: none; }
+
+  .approfondisci {
+    padding: 12px 24px;
+    min-height: 48px;
+  }
+  
 }
 
