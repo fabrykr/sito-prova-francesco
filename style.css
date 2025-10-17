@@ -230,11 +230,11 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
 
   /* 1. HEADER MOBILE: Fisso, con padding per la notch e testo visibile */
   header {
-  height: var(--altezza-header-mobile);
-  align-items: center;
-  padding: calc(env(safe-area-inset-top, 0px) + 8px) 6% 0 6%;
-  box-sizing: border-box;
-}
+    height: var(--altezza-header-mobile);
+    align-items: center;
+    padding: calc(env(safe-area-inset-top, 0px) + 8px) 6% 0 6%;
+    box-sizing: border-box;
+  }
 
 
   .header-content {
@@ -246,21 +246,24 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
   .sottotitolo { font-size: 1rem; margin-top: 2px; }
 
   /* 2. FOTO PERSONALE MOBILE: Non fissa, nel flusso del body */
+  /* Foto non fissa: parte del body */
   .foto-wrapper {
-    position: fixed;
-    top: calc(var(--altezza-header-mobile) + 12px); /* subito sotto header */
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
     width: 140px;
     height: 140px;
-    z-index: 500; /* sopra lo sfondo, ma sotto sidebar */
+    margin: calc(var(--altezza-header-mobile) + 16px) auto 20px auto;
+    top: auto;
+    right: auto;
+    transform: none;
+    z-index: 10;
   }
 
+  /* Spazio per contenuto principale */
   main {
-    margin-top: calc(var(--altezza-header-mobile) + 180px); /* lascia spazio per la foto */
+    margin-top: 0;
+    padding: 0 6%;
   }
 }
-
   /* 3. HAMBURGER MOBILE: Fisso, sotto l'header */
   .hamburger {
     top: calc(var(--altezza-header-mobile) + 12px);
