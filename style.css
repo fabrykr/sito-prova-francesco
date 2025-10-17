@@ -1,3 +1,9 @@
+/* Inserisci questo blocco in cima al tuo file style.css */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
   --colore-primario: #c00;
   --colore-accento: #d4af37;
@@ -244,7 +250,7 @@ button.prev:hover, button.next:hover { color: #fff; }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) { .reveal { transition: none; opacity: 1; transform: none; } }
 .mappa-locali.reveal.in-view:hover { transform: translateY(0) scale(1.05); }
-section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800px; }
+section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: auto 600px; }
 .foto-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; z-index: 3000; min-height: 100svh; }
 .foto-overlay.active { opacity: 1; pointer-events: all; }
 .close-overlay { position: absolute; top: calc(22px + env(safe-area-inset-top)); right: calc(22px + env(safe-area-inset-right)); background: transparent; color: #fff; border: none; font-size: 1.4rem; cursor: pointer; z-index: 3010; padding: 8px; border-radius: 8px; transition: background 0.15s ease; }
