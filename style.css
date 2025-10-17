@@ -230,10 +230,12 @@ section, .galleria-pizze { content-visibility: auto; contain-intrinsic-size: 800
 
   /* 1. HEADER MOBILE: Fisso, con padding per la notch e testo visibile */
   header {
-    height: var(--altezza-header-mobile);
-    align-items: center;
-    padding: calc(env(safe-area-inset-top)) 6% 0 6%;
-  }
+  height: var(--altezza-header-mobile);
+  align-items: center;
+  padding: calc(env(safe-area-inset-top, 0px) + 8px) 6% 0 6%;
+  box-sizing: border-box;
+}
+
 
   .header-content {
     text-align: center;
