@@ -323,6 +323,25 @@ setTimeout(() => {
   bindModalOnce();
 }, 150); // Delay per dare tempo al DOM di caricare
 
+// --- HEADER TRASPARENTE ALLO SCROLL ---
+function handleHeaderScroll() {
+  const header = document.querySelector('header');
+  if (!header) return;
+  
+  const scrollThreshold = 50; // Pixel da scrollare prima che cambi
+  
+  if (window.scrollY > scrollThreshold) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+}
+
+// Aggiungi event listener per lo scroll
+window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+
+// Controlla al caricamento della pagina
+handleHeaderScroll();
+
+  
 })();
-
-
