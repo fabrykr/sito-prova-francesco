@@ -267,17 +267,28 @@ function closeMenu() {
     }
   }
 
-  // --- FUNZIONE DI INIZIALIZZAZIONE GLOBALE ---
-  window.initUI = function initUI() {
-    if (typeof window.closeMenu === 'function') {
-      window.closeMenu();
-    }
-    bindCarousel();
-    setupReveal();
-  };
+// --- FUNZIONE DI INIZIALIZZAZIONE GLOBALE ---
+window.initUI = function initUI() {
+  if (typeof window.closeMenu === 'function') {
+    window.closeMenu();
+  }
+  bindCarousel();
+  setupReveal();
+  
+  // Attendi che il DOM sia completamente pronto prima di bindare il modale
+  setTimeout(() => {
+    bindModalOnce();
+  }, 100); // Piccolo delay per assicurarsi che il DOM sia pronto
+};
 
-  // Esecuzione delle funzioni di binding all'avvio dello script
-  bindGlobalEventsOnce();
+// Esecuzione delle funzioni di binding all'avvio dello script
+bindGlobalEventsOnce();
+
+// Chiama bindModalOnce solo dopo che il DOM è completamente caricato
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bindModalOnce);
+} else {
+  // DOM già caricato, esegui subito
   bindModalOnce();
+}
 
-})();
